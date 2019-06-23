@@ -46,3 +46,5 @@ fig.subplots_adjust(top=0.9)
 plt.show()
 
 fig.savefig("images/amenities.png", dpi=300)
+
+#just adding a bit of text to try something
