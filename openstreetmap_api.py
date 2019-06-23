@@ -6,9 +6,9 @@ import random
 
 df_ads = pd.read_pickle('df_ads.pkl')
 
-overpass_url = ["https://overpass.kumi.systems/api/interpreter","https://lz4.overpass-api.de/api/interpreter","https://z.overpass-api.de/api/interpreter"]
+overpass_url = "https://overpass.kumi.systems/api/interpreter"
 
-def addmapinfo(dict,radius=500):
+def addmapinfo(dict,radius=500, tries=5):
 
     df = []
 
@@ -39,7 +39,33 @@ def addmapinfo(dict,radius=500):
         out center;
         """
 
-        response = requests.get(overpass_url[random.randint(0,2)], params={'data': overpass_query})
+        # Server seems to time out or refuse randomly.
+        for n in range(tries):
+
+            try:
+
+                response = requests.get(overpass_url, params={'data': overpass_query})
+
+            except:
+
+                print("Exception occured for row " + str(index) + ", ad_id " + row.ad_id)
+                response = None
+                continue
+
+            else:
+
+                break
+
+        if response == None:
+
+            continue
+
+        # if the html response is not 200, go to the next row in the data
+        if response.status_code != 200:
+
+            print("Response code " + str(response.status_code) + " for row " + str(index) + ", ad_id " + row.ad_id)
+            continue
+
         response_json = response.json()
 
         # Counting the occurances of any of the values of a particular key
@@ -75,4 +101,4 @@ df_mapdata = addmapinfo(dict=type_dict)
 
 df_ads_mapdata = pd.concat([df_ads,df_mapdata], axis=1)
 
-df_ads_mapdata.to_pickle('df_ads_mapdata_0_500.pkl')
+df_ads_mapdata.to_pickle('df_ads_mapdata.pkl')
