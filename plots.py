@@ -25,4 +25,4 @@ fig.tight_layout()
 fig.subplots_adjust(top=0.9)
 
 plt.show()
-fig.savefig("images/prices_proporty_type.png")
+fig.savefig("images/prices_property_type.png")
