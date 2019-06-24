@@ -1,7 +1,5 @@
 import scrapy
 from scrapy.crawler import CrawlerProcess
-import js2xml
-from js2xml.utils.vars import get_vars
 import re
 import pandas as pd
 import geopy.distance
