@@ -64,13 +64,13 @@ df["price_sqm"] = df.price / df.surface
 hm_price_sqm = HeatMap( list(zip(df.latitude, df.longitude, df.price_sqm)),
                    min_opacity=0.2,
                    max_val=70000,
-                   radius=18, blur=10, 
+                   radius=20, blur=10, 
                    max_zoom=1, 
                  )
 
 hmap.add_child(hm_price_sqm)
 
-hmap.save('heatman_price_sqm.html')
+hmap.save('images/heatmap_price_sqm.html')
 
 # Heatmap of price
 
@@ -81,10 +81,10 @@ df = df_ads_mapdata[["latitude","longitude","price"]].dropna()
 hm_price = HeatMap( list(zip(df.latitude, df.longitude, df.price)),
                    min_opacity=0.2,
                    max_val=10000000,
-                   radius=18, blur=10, 
-                   max_zoom=1, 
+                   radius=20, blur=10, 
+                   max_zoom=5, 
                  )
 
 hmap.add_child(hm_price)
 
-hmap.save('heatmap_price.html')
+hmap.save('images/heatmap_price.html')
