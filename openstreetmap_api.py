@@ -1,8 +1,5 @@
 import pandas as pd
 import requests
-import json
-import numpy as np
-import random
 
 df_ads = pd.read_pickle('df_ads.pkl')
 
