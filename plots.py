@@ -5,6 +5,8 @@ import seaborn as sns
 import folium
 from folium.plugins import HeatMap
 
+%matplotlib inline
+
 df_ads_mapdata = pd.read_pickle('df_ads_mapdata.pkl')
 
 # Plotting mean price per property type and number of bedrooms
@@ -19,17 +21,14 @@ bedrooms = bedrooms.to_frame()
 bedrooms.columns = ['bedrooms']
 df = pd.concat([df,bedrooms],axis = 1)
 
-fig, axes = plt.subplots(2,2,sharey=True,figsize=(10,6))
-for ax, label in zip(axes.flatten(), bedroom_labels):
-    sns.barplot(x='price',y='property_type', data=df[df["bedrooms"]==label], estimator=np.mean, ci=None, ax=ax)
-    ax.set(title=label, xlabel="Average price (x1000)", ylabel=None)
-
-fig.suptitle('Property prices in Dublin')
-fig.tight_layout()
-fig.subplots_adjust(top=0.9)
-
+sns.barplot(x='price',y='property_type', data=df, estimator=np.mean, ci=None, hue='bedrooms')
+plt.ylabel(None)
+plt.xlabel('Price (x1000)')
+plt.legend(('1','2','3','3+'), loc='lower right', title='Bedrooms')
+plt.title('Property prices in Dublin')
+plt.tight_layout()
+plt.savefig("images/prices_property_type.png", dpi=300)
 plt.show()
-fig.savefig("images/prices_property_type.png", dpi=300)
 
 # Plotting average number of amenities
 
@@ -56,16 +55,13 @@ hmap = folium.Map(location=[53.346300, -6.263100], zoom_start=12, )
 
 df = df_ads_mapdata[["latitude","longitude","price","surface"]].dropna()
 
-df = df[df.surface>5]
-df = df[df.surface<400]
-
 df["price_sqm"] = df.price / df.surface
 
 hm_price_sqm = HeatMap( list(zip(df.latitude, df.longitude, df.price_sqm)),
                    min_opacity=0.2,
                    max_val=70000,
-                   radius=20, blur=10, 
-                   max_zoom=1, 
+                   radius=20, blur=10,
+                   max_zoom=1,
                  )
 
 hmap.add_child(hm_price_sqm)
@@ -81,8 +77,8 @@ df = df_ads_mapdata[["latitude","longitude","price"]].dropna()
 hm_price = HeatMap( list(zip(df.latitude, df.longitude, df.price)),
                    min_opacity=0.2,
                    max_val=10000000,
-                   radius=20, blur=10, 
-                   max_zoom=5, 
+                   radius=20, blur=10,
+                   max_zoom=5,
                  )
 
 hmap.add_child(hm_price)
