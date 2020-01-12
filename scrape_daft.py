@@ -12,7 +12,7 @@ class SpiderClassName(scrapy.Spider):
     }
     name = 'daft'
     start_urls = [
-        'https://www.daft.ie/dublin-city/property-for-sale',
+        'https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=9&s%5Badvanced%5D=1&searchSource=sale',
     ]
 
     def parse(self,response):
