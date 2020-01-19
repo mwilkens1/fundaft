@@ -1,6 +1,6 @@
 import pandas as pd
 
-df_ads_old = pd.read_pickle('df_ads_0201.pkl')
+df_ads_old = pd.read_pickle('df_ads_1201.pkl')
 
 df_ads_new = pd.read_pickle('df_ads.pkl')
 

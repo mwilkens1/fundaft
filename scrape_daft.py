@@ -12,7 +12,7 @@ class SpiderClassName(scrapy.Spider):
     }
     name = 'daft'
     start_urls = [
-        'https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=9&s%5Badvanced%5D=1&searchSource=sale',
+        'https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=6&s%5Badvanced%5D=1&searchSource=sale',
     ]
 
     def parse(self,response):
@@ -49,3 +49,4 @@ df_ads["dist_to_centre"] = df_ads.apply(lambda x: geopy.distance.distance((x.lat
 df_ads.to_pickle('df_ads.pkl')
 
 # df_ads = pd.read_pickle('df_ads.pkl')
+
