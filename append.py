@@ -1,18 +1,22 @@
 import pandas as pd
+import os
 
-df_ads_old = pd.read_pickle('df_ads_2701.pkl')
+os.remove('df_ads_mapdata_old.pkl')
+os.rename('df_ads_mapdata.pkl', 'df_ads_mapdata_old.pkl')
 
-df_ads_new = pd.read_pickle('df_ads.pkl')
+df_ads_mapdata_old = pd.read_pickle('df_ads_mapdata_old.pkl')
 
-len(df_ads_old)
-len(df_ads_new)
+df_ads_mapdata_new = pd.read_pickle('df_ads_mapdata.pkl')
 
-df_ads = df_ads_old.append(df_ads_new, ignore_index=True, sort=True)
+len(df_ads_mapdata_old)
+len(df_ads_mapdata_new)
 
-assert len(df_ads) == len(df_ads_old) + len(df_ads_new)
+df_ads_mapdata = df_ads_mapdata_old.append(df_ads_mapdata_new, ignore_index=True, sort=True)
 
-df_ads = df_ads.drop_duplicates()
+assert len(df_ads_mapdata) == len(df_ads_mapdata_old) + len(df_ads_mapdata_new)
 
-len(df_ads)
+df_ads_mapdata = df_ads_mapdata.drop_duplicates()
 
-df_ads.to_pickle('df_ads.pkl')
+len(df_ads_mapdata)
+
+df_ads_mapdata.to_pickle('df_ads_mapdata.pkl')
