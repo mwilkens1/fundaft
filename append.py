@@ -1,9 +1,6 @@
 import pandas as pd
 import os
 
-os.remove('df_ads_mapdata_old.pkl')
-os.rename('df_ads_mapdata.pkl', 'df_ads_mapdata_old.pkl')
-
 df_ads_mapdata_old = pd.read_pickle('df_ads_mapdata_old.pkl')
 
 df_ads_mapdata_new = pd.read_pickle('df_ads_mapdata.pkl')
@@ -20,3 +17,4 @@ df_ads_mapdata = df_ads_mapdata.drop_duplicates()
 len(df_ads_mapdata)
 
 df_ads_mapdata.to_pickle('df_ads_mapdata.pkl')
+os.remove('df_ads_mapdata_old.pkl')
