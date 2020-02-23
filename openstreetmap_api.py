@@ -3,55 +3,87 @@ import requests
 import geopy.distance
 import pickle
 
+#This module gets a list of amenities in 30km around the centre of Dublin.
+#Using the openstreetmap API
 overpass_url = "https://overpass.kumi.systems/api/interpreter"
 
 # Get list of lists of amenities in 30km around the centre of Dublin
-
-type_dict = {"pubs": ['"amenity"="pub"','"amenity"="bar"'], "caferestaurants": ['"amenity"="restaurant"','"amenity"="cafe"'], 'schools': ['"amenity"="school"'], 'stations': ['"railway"="platform"'], "platforms": ['"public_transport"="platform"'],'parks': ['"leisure"="park"'], 'churches': ['"amenity"="place_of_worship"'], 'health': ['"amenity"="clinic"','"amenity"="doctor"'], 'sports': ['"leisure"="pitch"','"leisure"="fitness_centre"','"leisure"="sports_centre"'], 'shops': ['"shop"']}
+# Here the types of amenities are specified according to openstreetmap 
+# conventions. Some are merged into one category.
+type_dict = {"pubs": ['"amenity"="pub"','"amenity"="bar"'], 
+             "caferestaurants": ['"amenity"="restaurant"','"amenity"="cafe"'], 
+             'schools': ['"amenity"="school"'], 
+             'stations': ['"railway"="platform"'], 
+             "platforms": ['"public_transport"="platform"'],
+             'parks': ['"leisure"="park"'], 
+             'churches': ['"amenity"="place_of_worship"'], 
+             'health': ['"amenity"="clinic"','"amenity"="doctor"'], 
+             'sports': ['"leisure"="pitch"',
+                        '"leisure"="fitness_centre"',
+                        '"leisure"="sports_centre"'], 
+             'shops': ['"shop"']}
 
 osm_data = {}
 
-for key, value in type_dict.items():
+for type_name, type_definition in type_dict.items():
 
-    string = ""
-    for i in value:
+    #Creating the query for each amenity type 
+    type_query = ""
+    #Pasting different queries for subtypes together
+    for subtype in type_definition:
 
-        string = string + """   node[""" + str(i).replace("'","") + """](around:30000,53.346300,-6.263100);
-        way[""" + str(i).replace("'","") + """](around:30000,53.346300,-6.263100);
-        relation[""" + str(i).replace("'","") + """](around:30000,53.346300,-6.263100);
-        """
+        type_query = type_query + \
+                     """   node[""" + \
+                     str(subtype).replace("'","") + \
+                     """](around:30000,53.346300,-6.263100);
+                     way[""" + \
+                     str(subtype).replace("'","") + \
+                     """](around:30000,53.346300,-6.263100);
+                     relation[""" + \
+                     str(subtype).replace("'", "") + \
+                     """](around:30000,53.346300,-6.263100);"""
 
+    # Building the query
     overpass_query = """
     [out:json];
     (
-    """ + string + """
+    """ + type_query + """
     );
     out center;
     """
-
+    
+    #querying the database
     response = requests.get(overpass_url, params={'data': overpass_query})
 
+    #Checking the response
     assert response.status_code == 200
 
+    #Converting to json
     response_json = response.json()
 
-    dict_key = {}
+    #Building a dictionary with the results
+    type_results = {}
 
-    for k in ["id","lat","lon"]:
+    #Extract the id of the amenity and its coordinates
+    for var in ["id","lat","lon"]:
 
-        x = []
-        for e in response_json["elements"]:
+        values = []
+        #for each element in the json
+        for element in response_json["elements"]:
 
-            if k in e:
-                x.append(e[k])
+            #test if id, latitude or longitude is there and add to data
+            if var in element:
+                values.append(element[var])
             else:
-                if k in e["center"]:
-                    x.append(e["center"][k])
+                if var in element["center"]:
+                    values.append(element["center"][var])
 
-        dict_key.update({k:x})
+        type_results.update({var: values})
 
-        df_key = pd.DataFrame(dict_key)
+        #Create dataframe of id, longitude, latitude for subcategory    
+        df_type_results = pd.DataFrame(type_results)
 
-    osm_data.update({key:df_key})
+    #Add each type as a dataframe to the list of dataframes
+    osm_data.update({type_name: df_type_results})
 
 pickle.dump(osm_data, open("osm_data.p", "wb"))
