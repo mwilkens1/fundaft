@@ -31,28 +31,40 @@ def get_searchgrid(point, distance):
 
     return(searchgrid)
 
-def loop_over_ads(lat, lon):
+def is_closeby(lat1, lon1, lat2, lon2):
+    """Test if two locations are 0.5km from each other"""
+
+    distance = geopy.distance.distance((lat1, lon1), (lat2, lon2)).km < 0.5	        
+    return(distance)
+
+def count_amenities(lat, lon):
     """ Using list comprehensions, count the occurances of each type of amenity 
-    in a 0.5 mile radius from each property and returns count of closeby
+    in a 0.5km radius from each property and returns count of closeby
     amenities in a dictionary """
 
+    #Get the coordinates of the square km around the property
     searchgrid = get_searchgrid((lat,lon),distance=0.5)
-
-    # Count number of closeby amenities and store into dictionary.
+    
     counts_dict = {}
     for amenity_type, coordinates in osm_data.items():
 
-        slice = coordinates.loc[((coordinates["lat"] > searchgrid['South']) &
-                                 (coordinates["lat"] < searchgrid['North']) &
-                                 (coordinates["lon"] > searchgrid['West']) &
-                                 (coordinates["lon"] < searchgrid['East']))]
-        counts_dict.update({amenity_type: len(slice)})
+        #Slice out the square km from the amenity data
+        square = coordinates.loc[((coordinates["lat"] > searchgrid['South']) &
+                                  (coordinates["lat"] < searchgrid['North']) &
+                                  (coordinates["lon"] > searchgrid['West']) &
+                                  (coordinates["lon"] < searchgrid['East']))]
+
+        #Within the square km, count those within a 0.5km radius
+        count = sum([is_closeby(lat1,lon1,lat,lon) for 
+                        lat1, lon1 in zip(square['lat'], square['lon'])])
+
+        # Count number of closeby amenities and store into dictionary.
+        counts_dict.update({amenity_type: count})
 
     return(counts_dict)
 
-
-#Run the function
-amenity_count = [loop_over_ads(lat, lon) for lat, lon in
+#Count the amenities for each property listing
+amenity_count = [count_amenities(lat, lon) for lat, lon in
                  zip(df_ads['latitude'], df_ads['longitude'])]
 amenity_count_df = pd.DataFrame(amenity_count)
 
