@@ -7,6 +7,7 @@ import os
 from datetime import datetime, date
 from shutil import copyfile
 
+
 #Get number of days since last crawl.
 date_last_crawl = datetime.utcfromtimestamp(os.path.getmtime("df_ads.pkl")).date()
 timedelta = date.today() - date_last_crawl
