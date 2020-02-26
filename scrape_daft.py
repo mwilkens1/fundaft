@@ -97,16 +97,3 @@ class Crawl_daft:
             ads.append(eval(i.replace("null", "np.nan")))
 
         self.data = pd.DataFrame(ads)
-
-test = Crawl_daft()
-test.count_days_since_last_crawl()
-test.create_url()
-test.backup()
-test.crawl()
-test.data.to_pickle('df_ads.pkl')
-
-# Calculate distance to centre
-hapenny = (53.346300, -6.263100)
-df_ads["dist_to_centre"] = df_ads.apply(lambda x: geopy.distance.distance(
-                                                    (x.latitude,x.longitude),
-                                                    hapenny).km, axis=1)
