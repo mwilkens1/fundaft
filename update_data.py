@@ -1,7 +1,7 @@
 from scrape_daft import Crawl_daft, Daft_spider
 from add_osm_data import add_osm_data
 import pickle
-import os
+import pandas as pd
 
 # Initiate crawler
 crawler = Crawl_daft()
@@ -26,14 +26,18 @@ osm_data = pickle.load(open("osm_data.p", "rb"))
 add_osm_data = add_osm_data(osm_data, crawler.data)
 add_osm_data.count_amenities()
 add_osm_data.merge_data()
-add_osm_data.df_ads_mapdata.head()
 
-#Update the file
-os.rename('df_ads_mapdata.pkl', 'df_ads_mapdata_old.pkl')
-add_osm_data.df_ads_mapdata.to_pickle('df_ads_mapdata.pkl')
+df_ads_mapdata_old = pd.read_pickle('df_ads_mapdata.pkl')
 
-# Calculate distance to centre
-#hapenny = (53.346300, -6.263100)
-#df_ads["dist_to_centre"] = df_ads.apply(lambda x: geopy.distance.distance(
-#    (x.latitude, x.longitude),
-#    hapenny).km, axis=1)
+len(df_ads_mapdata_old)
+len(add_osm_data.df_ads_mapdata)
+
+df_ads_mapdata = df_ads_mapdata_old.append(
+    add_osm_data.df_ads_mapdata, ignore_index=True, sort=True)
+
+df_ads_mapdata = df_ads_mapdata.drop_duplicates()
+
+len(df_ads_mapdata)
+
+df_ads_mapdata.to_pickle('df_ads_mapdata.pkl')
+

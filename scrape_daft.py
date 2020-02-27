@@ -65,10 +65,10 @@ class Crawl_daft:
 
     def count_days_since_last_crawl(self):
         """Calculates the number of days since the last crawl on the basis
-        of the date when the df_ads.pkl file was last modified"""
+        of the date when the df_ads_mapdata.pkl file was last modified"""
 
         self.date_last_crawl=datetime.utcfromtimestamp(
-            os.path.getmtime("df_ads.pkl")).date()
+            os.path.getmtime("df_ads_mapdata.pkl")).date()
         timedelta = date.today() - self.date_last_crawl
         self.days_since_last_crawl = timedelta.days
         print("Days since last crawl: ", self.days_since_last_crawl)
