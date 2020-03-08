@@ -49,20 +49,26 @@ def name_area(lon, lat):
 
 # Running the function for each point in the data
 df_ads_mapdata["EDNAME"] = [name_area(lon, lat) for (lon, lat) in
-                            zip(df_ads_mapdata.longitude, df_ads_mapdata.latitude)]
+                            zip(df_ads_mapdata.longitude, 
+                                df_ads_mapdata.latitude)]
 df_ads_mapdata["EDNAME"] = df_ads_mapdata["EDNAME"].str[0]
 
+import numpy as np
 df = df_ads_mapdata.groupby("EDNAME")[['price']].median().reset_index()
+df["logprice"] = np.log(df.price)
+df["price"] = round(df.price,-3)
 
-fig = px.choropleth_mapbox(df, geojson=areas, color="price",
+#color_continuous_scale = px.colors.diverging.RdYlGn[::-1]
+
+fig = px.choropleth_mapbox(df, geojson=areas, color="logprice",
                            locations="EDNAME", featureidkey="properties.EDNAME",
-                           center={"lat": 53.32, "lon": -6.3},
+                           center={"lat": 53.324, "lon": -6.3},
                            mapbox_style="carto-positron", zoom=10,
+                           color_continuous_scale=px.colors.sequential.YlOrRd,
                            opacity=0.6,
-                           labels={'EDNAME': '', 'price': "Median price"},
-                           title="Median price on Daft.ie",
-                           hover_name="EDNAME",
-                           width=1000, height=1000)
+                           hover_data=['price'],
+                           labels={'EDNAME': 'Area',
+                                   'price': "<b>Median price(€)</b>", 
+                                   'logprice': "Median price (log)"},
+                           width=1000, height=850)
 fig.show()
-
-
