@@ -73,14 +73,6 @@ class Crawl_daft:
         self.days_since_last_crawl = timedelta.days
         print("Days since last crawl: ", self.days_since_last_crawl)
 
-    def backup(self):
-        """Creates backup of df_ads.pkl file"""
-
-        copyfile('data/df_ads.pkl', 'data/df_ads_' +
-                 self.date_last_crawl.strftime('%d-%m-%Y') + '.pkl')
-        print("Backup created: df_ads_" +
-              self.date_last_crawl.strftime('%d-%m-%Y') + '.pkl')
-
     def crawl(self):
         process = CrawlerProcess()
         process.crawl(Daft_spider, start_urls=[self.start_urls]) 
