@@ -4,15 +4,15 @@
 
 <head>
 
-  <title>Dublin housing market dashboard</title>
+  <title>Dublin dashboard</title>
 
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="../static/css/side_style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <link rel="stylesheet" href="../static/css/side_style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <link rel="shortcut icon" href="{{ url_for('static', filename='img/door_icon.ico') }}">
 
 </head>
@@ -20,7 +20,7 @@
 
 <body>
 
-  <div id="wrapper">
+ <div id="wrapper">
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
@@ -28,55 +28,62 @@
         <br></br>
         <h5 class="sidebar-subheading">No. of bedrooms</h5>
         <div class="form-check">
-          <input class="form-check-input bedrooms" type="radio" value="bed_any" id="bed_any" name="bedrooms" checked>
+          <input class="form-check-input filter" type="radio" value="bed_any" id="bed_any" name="bedrooms" checked>
           <label class="form-check-label sidebar-label" for="bed_any">Any</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input bedrooms" type="radio" value="bed1" id="bed1" name="bedrooms">
+          <input class="form-check-input filter" type="radio" value="bed1" id="bed1" name="bedrooms">
           <label class="form-check-label sidebar-label" for="bed1">1</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input bedrooms" type="radio" value="bed2" id="bed2" name="bedrooms">
+          <input class="form-check-input filter" type="radio" value="bed2" id="bed2" name="bedrooms">
           <label class="form-check-label sidebar-label" for="bed2">2</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input bedrooms" type="radio" value="bed3" id="bed3" name="bedrooms">
+          <input class="form-check-input filter" type="radio" value="bed3" id="bed3" name="bedrooms">
           <label class="form-check-label sidebar-label" for="bed3">3</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input bedrooms" type="radio" value="bed4" id="bed4" name="bedrooms">
+          <input class="form-check-input filter" type="radio" value="bed4" id="bed4" name="bedrooms">
           <label class="form-check-label sidebar-label" for="bed4">4+</label>
         </div>
         <h5 class="sidebar-subheading mt-3">Property type</h5>
         <div class="form-check">
-          <input class="form-check-input proptype" type="radio" value="type_any" id="type_any" name="proptype" checked>
+          <input class="form-check-input filter" type="radio" value="type_any" id="type_any" name="proptype" checked>
           <label class="form-check-label sidebar-label" for="type_any">Any</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input proptype" type="radio" value="detached" id="detached" name="proptype">
+          <input class="form-check-input filter" type="radio" value="detached" id="detached" name="proptype">
           <label class="form-check-label sidebar-label" for="detached">Detached</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input proptype" type="radio" value="semi-detached" id="semi-detached" name="proptype">
+          <input class="form-check-input filter" type="radio" value="semi-detached" id="semi-detached" name="proptype">
           <label class="form-check-label sidebar-label" for="semi-detached">Semi-detached</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input proptype" type="radio" value="terraced" id="terraced" name="proptype">
+          <input class="form-check-input filter" type="radio" value="terraced" id="terraced" name="proptype">
           <label class="form-check-label sidebar-label" for="terraced">Terraced</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input proptype" type="radio" value="apartment" id="apartment" name="proptype">
+          <input class="form-check-input filter" type="radio" value="apartment" id="apartment" name="proptype">
           <label class="form-check-label sidebar-label" for="apartment">Apartments</label>
         </div>
-
+        <h5 class="sidebar-subheading mt-3">Quarter</h5>
+        <select class="form-control form-control-sm filter" id='Q'>
+          <option value="all">All</option>
+          <option value="2020Q1">Q1-2020</option>
+          <option value="2019Q4">Q4-2019</option>
+          <option value="2019Q3">Q3-2019</option>
+          <option value="2019Q2">Q2-2019</option>
+        </select>
       </ul>
     </div>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-      <div class="collapse navbar-collapse " id="navbarSupportedContent">
+      <div class="navbar-collapse " id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto ">
-          <li class="nav-item active bg-light rounded">
+          <li class="nav-item active bg-light rounded ">
             <a href="#menu-toggle" class="nav-link" id="menu-toggle">Plot controls</a>
           </li>
           <li class="nav-item active bg-light rounded">
@@ -101,57 +108,58 @@
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
           </li>
         </ul>
+
+        <div class="navbar-brand bg-transparent rounded">
+          <a href="https://www.daft.ie">
+            <img src="{{ url_for('static', filename='img/daft_logo.png') }}" height="30" id="daft">
+          </a>
+          <a href="https://github.com/mwilkens1/fundaft">
+            <img src="{{ url_for('static', filename='img/githublogo.png') }}" height="30" id="github">
+          </a>
+          <a href="https://www.linkedin.com/in/mathijn-wilkens-61184322">
+            <img src="{{ url_for('static', filename='img/linkedinlogo.png') }}" height="30" id="linked">
+          </a>
+        </div>
+
       </div>
 
-      <div class="navbar-brand bg-transparent rounded">
-        <a href="https://www.daft.ie">
-          <img class="pull-right" src="{{ url_for('static', filename='img/daft_logo.png') }}" height="40" id="daft">
-        </a>
-        <a href="https://github.com/mwilkens1/fundaft">
-          <img class="pull-right" src="{{ url_for('static', filename='img/githublogo.png') }}" height="40" id="github">
-        </a>
-        <a href="https://www.linkedin.com/in/mathijn-wilkens-61184322">
-          <img class="pull-right" src="{{ url_for('static', filename='img/linkedinlogo.png') }}" height="40"
-            id="linked">
-        </a>
-      </div>
 
     </nav>
 
     <div class="container-fluid" style="float: left">
       <div class="row align-items-start">
         <div class="col-">
-          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 600px; height: 650px;">
+          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 540px; height: 600px;">
             <div class="card-body">
               <h5 class="card-title">Asking price on Daft.ie</h5>
               <div class="card-text">Median price per area (x1000€)</div>
-              <div class="mt-1" id="cmap" style="width: 600px;"></div>
+              <div class="mt-1" id="cmap"></div>
             </div>
           </div>
         </div>
 
         <div class="col-">
-          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 450px; height: 321px;">
+          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 400px; height: 296px;">
             <div class="card-body">
               <h5 class="card-title">Most expensive areas</h5>
               <div class="card-text">Median price per areas (x1000€)</div>
-              <div class="mt-1" id="exp_plot"></div>
+              <div  id="exp_plot"></div>
             </div>
           </div>
-          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 450px; height: 321px;">
+          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 400px; height: 296px;">
             <div class="card-body">
               <h5 class="card-title">Cheapest area</h5>
               <div class="card-text">Median price per area (x1000€)</div>
-              <div class="mt-1" id="cheap_plot"></div>
+              <div id="cheap_plot"></div>
             </div>
           </div>
         </div>
 
         <div class="col-">
-          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 600px; height: 321px;">
+          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 500px; height: 296px;">
             <div class="card-body">
               <h5 class="card-title">Price development on Daft.ie (x1000€)</h5>
-              <div class="mt-1" id="price_time"></div>
+              <div id="price_time"></div>
             </div>
           </div>
         </div>
@@ -161,6 +169,11 @@
     </div>
 
   </div>
+
+<!-- This JS creates the plotly plots. The data is passed on by python as a json. 
+     ALl except the variable 'figures' is a function which is called in the end. 
+     This function can be called again if the buttons are changed, see below -->
+
 
 <script>
 
@@ -191,7 +204,7 @@
         zoom: 9.5,
         layers: { opacity: 0.6 }
       },
-      width: 550, height: 550,
+      width: 500, height: 500,
       coloraxis: { showscale: false, colorscale: "YIOrRd" },
       margin: { l: 0, r: 0, b: 0, t: 0 }
     };
@@ -207,9 +220,10 @@
     var layout = {
       paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
-      width: 400, height: 200,
-      margin: { l: 125, r: 0, b: 25, t: 25 },
-      xaxis: { showgrid: false, zeroline: false, }
+      width: 350, height: 200,
+      margin: { l: 100, r: 0, b: 25, t: 5 },
+      xaxis: { showgrid: false, zeroline: false, },
+      font: {size: 10}
     };
 
     cmap = document.getElementById('exp_plot');
@@ -225,7 +239,7 @@
       }
     }];
 
-    Plotly.newPlot(exp_plot, data, layout);
+    Plotly.newPlot(exp_plot, data, layout,  { displayModeBar: false });
 
     cmap = document.getElementById('cheap_plot');
 
@@ -237,7 +251,7 @@
       marker: { opacity: 0.6 }
     }];
 
-    Plotly.newPlot(cheap_plot, data, layout);
+    Plotly.newPlot(cheap_plot, data, layout,{ displayModeBar: false });
 
     //Price over time plot
     price_time = document.getElementById('price_time');
@@ -251,15 +265,17 @@
     var layout = {
       paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
-      width: 500, height: 250,
-      margin: { l: 40, r: 25, b: 25, t: 25 }
+      width: 475, height: 200,
+      margin: { l: 25, r: 25, b: 25, t: 0 },
+      font: { size: 10 }
     };
 
-    Plotly.newPlot(price_time, data, layout);
+    Plotly.newPlot(price_time, data, layout, { displayModeBar: false });
 
   }
 
   plots(figures)
+
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -267,26 +283,33 @@
   integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
   integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<!-- This part communicates with python through flask
+     It makes sure the controls change the data. -->
+
 <script>
 
-$("#menu-toggle").click(function (e) {
-  e.preventDefault();
-  $("#wrapper").toggleClass("toggled");
-});
-
-
-$('input[type=radio]').change(function() {
-
-    $.getJSON({
-    url: "/change_selection",
-    data: { 'bedrooms': $("input[name='bedrooms']:checked").val(),
-            'proptype': $("input[name='proptype']:checked").val()},
-    success: function(data){
-        plots(data);
-    }
+    $("#menu-toggle").click(function (e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
     });
 
-});
+
+    $('.filter').change(function() {
+
+        $.getJSON({
+        url: "/change_selection",
+        data: { 'bedrooms': $("input[name='bedrooms']:checked").val(),
+                'proptype': $("input[name='proptype']:checked").val(),
+                'Q'       : $('#Q').val()},
+        success: function(data){
+
+            plots(data);
+
+        }
+        });
+
+    });
 
 </script>
 

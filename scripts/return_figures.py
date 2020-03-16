@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly
 
-def return_figures(bedrooms, proptype):
+def return_figures(bedrooms, proptype, Q):
     
     # Choropleth map
     with open("data/boundaries/ED.geojson") as json_file:
@@ -27,6 +27,9 @@ def return_figures(bedrooms, proptype):
         df_ads_mapdata = df_ads_mapdata[df_ads_mapdata.property_type ==  "terraced"]
     if proptype == "apartment":
         df_ads_mapdata = df_ads_mapdata[df_ads_mapdata.property_type == "apartment"]
+
+    if Q != 'all':
+        df_ads_mapdata = df_ads_mapdata[df_ads_mapdata.quarter == Q]
 
     df = df_ads_mapdata.groupby("EDNAME")[['price']].median().reset_index()
     df["logprice"] = np.log(df.price)

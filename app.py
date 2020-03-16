@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def index():
 
-    figuresJSON = return_figures("any","any")
+    figuresJSON = return_figures("any","any","all")
 
     return render_template('index.html',
                            figuresJSON=figuresJSON)
@@ -19,8 +19,9 @@ def change_selection():
     
     bedrooms = request.args.get('bedrooms')
     proptype = request.args.get('proptype')
+    Q = request.args.get('Q')
 
-    figuresJSON = return_figures(bedrooms, proptype)
+    figuresJSON = return_figures(bedrooms, proptype, Q)
 
     return figuresJSON
 

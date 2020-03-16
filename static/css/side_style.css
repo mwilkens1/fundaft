@@ -1,3 +1,6 @@
+html {
+  font-size: 14px;
+}
 #wrapper {
   padding-left: 0;
   -webkit-transition: all 0.5s ease;
@@ -36,11 +39,11 @@
 }
 .sidebar-subheading {
   color: white;
-  font-size: 12px;
+  font-size: 14px;
 }
 .sidebar-label {
   color: white;
-  font-size: 12px;
+  font-size: 14px;
 }
 .sidebar-nav  {
   position: absolute;
@@ -51,7 +54,7 @@
 
 .sidebar-nav > .sidebar-brand {
   height: 65px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 20px;
   color: white;
 }
@@ -79,46 +82,3 @@
     margin-right: 0;
   }
 }
-
-/* Sidebar Styles 
-
-.sidebar-nav {
-  position: absolute;
-  top: 0;
-  width: 150px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.sidebar-nav li {
-  
-
-}
-.sidebar-nav li h6 {
-  display: block;
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-}
-.sidebar-nav li a:hover {
-  text-decoration: none;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.2);
-}
-.sidebar-nav li a:active,
-.sidebar-nav li a:focus {
-  text-decoration: none;
-}
-.sidebar-nav > .sidebar-brand {
-  height: 65px;
-  font-size: 18px;
-  line-height: 60px;
-}
-.sidebar-nav > .sidebar-brand a {
-  color: black;
-}
-.sidebar-nav > .sidebar-brand a:hover {
-  color: #fff;
-  background: none;
-}
-*/
