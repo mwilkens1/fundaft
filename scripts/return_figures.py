@@ -10,6 +10,11 @@ def return_figures(bedrooms, proptype, Q):
                 geojson = json.load(json_file)
     df_ads_mapdata = pd.read_pickle('data/df_ads_mapdata.pkl')
 
+    df_violin = df_ads_mapdata[['price','property_type']].copy()
+    df_violin["logprice"] = np.log(df_violin.price)
+    df_violin = df_violin[df_violin['property_type'].isin(['apartment','detached',
+                                                           'semi-detached','terraced'])]
+
     if bedrooms == "bed1":
         df_ads_mapdata = df_ads_mapdata[df_ads_mapdata.beds==1]
     if bedrooms == "bed2":
@@ -57,11 +62,14 @@ def return_figures(bedrooms, proptype, Q):
 
     fig4 = dict(x=df.month,y=df.price)
 
+    fig5 = dict(x=df_violin.property_type, y=df_violin.logprice)
+
     figures = []
     figures.append(fig1)
     figures.append(fig2)
     figures.append(fig3)
     figures.append(fig4)
+    figures.append(fig5)
 
     figuresJSON = json.dumps(figures, cls=plotly.utils.PlotlyJSONEncoder)
 
