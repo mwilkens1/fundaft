@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def index():
 
-    figuresJSON = return_figures("any","any","all")
+    figuresJSON = return_figures(0,"any","all")
 
     return render_template('index.html',
                            figuresJSON=figuresJSON)

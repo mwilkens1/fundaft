@@ -28,23 +28,23 @@
         <br></br>
         <h5 class="sidebar-subheading">No. of bedrooms</h5>
         <div class="form-check">
-          <input class="form-check-input filter" type="radio" value="bed_any" id="bed_any" name="bedrooms" checked>
+          <input class="form-check-input filter" type="radio" value=0 id="bed_any" name="bedrooms" checked>
           <label class="form-check-label sidebar-label" for="bed_any">Any</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input filter" type="radio" value="bed1" id="bed1" name="bedrooms">
+          <input class="form-check-input filter" type="radio" value=1 id="bed1" name="bedrooms">
           <label class="form-check-label sidebar-label" for="bed1">1</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input filter" type="radio" value="bed2" id="bed2" name="bedrooms">
+          <input class="form-check-input filter" type="radio" value=2 id="bed2" name="bedrooms">
           <label class="form-check-label sidebar-label" for="bed2">2</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input filter" type="radio" value="bed3" id="bed3" name="bedrooms">
+          <input class="form-check-input filter" type="radio" value=3 id="bed3" name="bedrooms">
           <label class="form-check-label sidebar-label" for="bed3">3</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input filter" type="radio" value="bed4" id="bed4" name="bedrooms">
+          <input class="form-check-input filter" type="radio" value=4 id="bed4" name="bedrooms">
           <label class="form-check-label sidebar-label" for="bed4">4+</label>
         </div>
         <h5 class="sidebar-subheading mt-3">Property type</h5>
@@ -127,61 +127,76 @@
     </nav>
 
     <div class="container-fluid" style="float: left">
-      <div class="row align-items-start">
-        <div class="col-">
-          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 540px; height: 600px;">
-            <div class="card-body">
-              <h5 class="card-title">Asking price on Daft.ie</h5>
-              <div class="card-text">Median price per area (x1000€)</div>
-              <div class="mt-1" id="cmap"></div>
+      <div class="row">        
+        <div clas="col-auto">
+          <div class="row">
+            <div class="col-auto">
+              <div class="col-auto card rounded bg-light ml-4 mt-4 mb-4 p-1" style="width: 560px; height: 600px;">
+                <div class="card-body">
+                  <h5 class="card-title">Asking price on Daft.ie</h5>
+                  <div class="card-text">Median price per area (x1000€)</div>
+                  <div class="mt-1" id="cmap"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="card rounded bg-light mr-2 mt-4 p-1" style="width: 320px; height: 296px;">
+                <div class="card-body">
+                  <h5 class="card-title">Most expensive areas</h5>
+                  <div class="card-text">Median price per areas (x1000€)</div>
+                  <div  id="exp_plot"></div>
+                </div>
+              </div>
+              <div class="card rounded bg-light mr-2 mt-2 mb-4 p-1" style="width: 320px; height: 296px;">
+                <div class="card-body">
+                  <h5 class="card-title">Cheapest area</h5>
+                  <div class="card-text">Median price per area (x1000€)</div>
+                  <div id="cheap_plot"></div>
+                </div>
+              </div> 
             </div>
           </div>
         </div>
-
-        <div class="col-">
-          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 400px; height: 296px;">
-            <div class="card-body">
-              <h5 class="card-title">Most expensive areas</h5>
-              <div class="card-text">Median price per areas (x1000€)</div>
-              <div  id="exp_plot"></div>
+        <div class="col-auto">
+          <div class="row">
+            <div class="col">
+              <div class="card rounded bg-light mt-4 p-1" style="width: 830px; height: 218px;">
+                <div class="card-body">
+                  <h5 class="card-title">Price development on Daft.ie (x1000€)</h5>
+                  <div id="price_time"></div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 400px; height: 296px;">
-            <div class="card-body">
-              <h5 class="card-title">Cheapest area</h5>
-              <div class="card-text">Median price per area (x1000€)</div>
-              <div id="cheap_plot"></div>
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <div class="col-6">
+                  <div class="card rounded bg-light mt-4 p-1" style="width: 400px; height: 360px;">
+                    <div class="card-body">
+                      <h5 class="card-title">Property types</h5>
+                      <div id="proptype"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="card rounded bg-light mt-4 p-1" style="width: 400px; height: 360px;">
+                    <div class="card-body">
+                      <h5 class="card-title">Number of bedrooms</h5>
+                      <div id="bedrooms"></div>
+                    </div>
+                  </div>  
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="col-">
-          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 500px; height: 350px;">
-            <div class="card-body">
-              <h5 class="card-title">Price development on Daft.ie (x1000€)</h5>
-              <div id="price_time"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-">
-          <div class="card rounded bg-light ml-2 mt-2 p-1" style="width: 500px; height: 350px;">
-            <div class="card-body">
-              <h5 class="card-title">Property types</h5>
-              <div id="violin"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
-
   </div>
 
 <!-- This JS creates the plotly plots. The data is passed on by python as a json. 
      ALl except the variable 'figures' is a function which is called in the end. 
      This function can be called again if the buttons are changed, see below -->
-
 
 <script>
 
@@ -212,7 +227,7 @@
         zoom: 9.5,
         layers: { opacity: 0.6 }
       },
-      width: 500, height: 500,
+      width: 520, height: 500,
       coloraxis: { showscale: false, colorscale: "YIOrRd" },
       margin: { l: 0, r: 0, b: 0, t: 0 }
     };
@@ -228,7 +243,7 @@
     var layout = {
       paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
-      width: 350, height: 200,
+      width: 290, height: 200,
       margin: { l: 100, r: 0, b: 25, t: 5 },
       xaxis: { showgrid: false, zeroline: false, },
       font: {size: 10}
@@ -273,25 +288,26 @@
     var layout = {
       paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
-      width: 475, height: 300,
+      width: 800, height: 150,
       margin: { l: 25, r: 25, b: 25, t: 0 },
       font: { size: 10 }
     };
 
     Plotly.newPlot(price_time, data, layout, { displayModeBar: false });
 
-  }
+    var layout = {    
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      margin: { l: 0, r: 100, b: 0, t: 5 },
+      width: 375, height: 280,
+      font: { size: 10 },
+      yaxis: {type: 'log', autorange: true, zeroline: false, showgrid: false}
+    }
 
-  plots(figures)
-
-  var data = [{
+    var data = [{
       type: 'violin',
       x: figures[4].x,
       y: figures[4].y,
-      points: 'none',
-      box: {visible: true},
-      line: {color: 'green'},
-      meanline: {visible: true},
       transforms: [{
         type: 'groupby',
         groups: figures[4].x,
@@ -304,17 +320,31 @@
       }]
     }]
 
-    var layout = {
-      yaxis: {zeroline: false},
-      paper_bgcolor: 'rgba(0,0,0,0)',
-      plot_bgcolor: 'rgba(0,0,0,0)',
-      margin: { l: 0, r: 100, b: 0, t: 5 },
-      width: 475, height: 300,
-    }
+    proptype = document.getElementById('proptype');
+    Plotly.newPlot(proptype, data, layout);
     
-    violin = document.getElementById('violin');
-    Plotly.newPlot(violin, data, layout);
+    var data = [{
+      type: 'violin',
+      x: figures[5].x,
+      y: figures[5].y,
+      transforms: [{
+        type: 'groupby',
+        groups: figures[5].x,
+        styles: [
+          { target: '1', value: { line: { color: 'blue' } } },
+          { target: '2', value: { line: { color: 'orange' } } },
+          { target: '3', value: { line: { color: 'green' } } },
+          { target: '4+', value: { line: { color: 'red' } } }
+        ]
+      }]
+    }]
+    
+    bedrooms = document.getElementById('bedrooms');
+    Plotly.newPlot(bedrooms, data, layout);
 
+  }
+
+  plots(figures)
 
 </script>
 
