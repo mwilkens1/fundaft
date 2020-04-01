@@ -1,5 +1,5 @@
-from scripts.scrape_daft import Crawl_daft, Daft_spider
-from scripts.add_data import Add_data
+from scrape_daft import Crawl_daft, Daft_spider
+from add_data import Add_data
 import pickle
 import pandas as pd
 

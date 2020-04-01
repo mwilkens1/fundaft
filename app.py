@@ -1,7 +1,7 @@
 import json
 import plotly
 from flask import render_template, request, url_for, jsonify, Flask
-from scripts.return_figures import return_figures
+from return_figures import return_figures
 
 app = Flask(__name__)
 
