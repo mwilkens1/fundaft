@@ -52,26 +52,25 @@ class Crawl_daft:
         self.date_last_crawl=time()
         self.start_urls=[]
         self.data = pd.DataFrame()
-
+     
     def create_url(self):
-        """Using the days since last crawl, creates the starting URL for
+        """Calculates the number of days since the last crawl on the basis
+        of the date when the df_ads_mapdata.pkl file was last modified. 
+        Then, using the days since last crawl, it creates the starting URL for
         the crawler"""
 
-        self.start_urls='https://www.daft.ie/dublin-city/property-for-sale/?' \
+        self.date_last_crawl=datetime.utcfromtimestamp(
+            os.path.getmtime("data/df_ads_mapdata.csv")).date()
+        timedelta = date.today() - self.date_last_crawl
+        self.days_since_last_crawl = timedelta.days
+
+        self.start_urls = 'https://www.daft.ie/dublin-city/property-for-sale/?' \
             'ad_type=sale&advanced=1&s%5Bdays_old%5D=' + \
             str(self.days_since_last_crawl-1) + \
             '&s%5Badvanced%5D=1&searchSource=sale'
-        print("URL: " + self.start_urls)
 
-    def count_days_since_last_crawl(self):
-        """Calculates the number of days since the last crawl on the basis
-        of the date when the df_ads_mapdata.pkl file was last modified"""
-
-        self.date_last_crawl=datetime.utcfromtimestamp(
-            os.path.getmtime("data/df_ads_mapdata.pkl")).date()
-        timedelta = date.today() - self.date_last_crawl
-        self.days_since_last_crawl = timedelta.days
-        print("Days since last crawl: ", self.days_since_last_crawl)
+        print("Days since last crawl: {}".format(self.days_since_last_crawl))
+        print("URL: {}".format(self.start_urls))
 
     def crawl(self):
         process = CrawlerProcess()

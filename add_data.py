@@ -1,11 +1,11 @@
 from shapely.geometry.polygon import Polygon
 import numpy as np
-import geopandas as gpd
 from shapely.geometry import Point
 import pandas as pd
 import pickle
 import geopy.distance
 import os
+import json
 from shutil import copyfile
 
 class Add_data:
@@ -22,11 +22,12 @@ class Add_data:
 
     """
 
-    def __init__(self,osm_data,df_ads,distance=0.5):
+    def __init__(self,df_ads,distance=0.5):
         self.distance = distance
-        self.osm_data = osm_data
+        # Open street map data created with openstreetmap_api.py
+        self.osm_data = pickle.load(open("data/osm_data.p", "rb"))
+        # Ads crawled with scrape_daft.py
         self.df_ads = df_ads
-        self.amenity_count_df = pd.DataFrame()
         self.df_ads_mapdata = pd.DataFrame()
 
     def get_searchgrid(self, point, distance):
@@ -84,11 +85,14 @@ class Add_data:
 
         return(counts_dict)
 
-    def count_amenities(self):
-        """Count the amenities for each property listing"""  
+    def add_amenities(self):
+        """Count the amenities for each property listing and 
+        merge this to the scraped ads file"""  
         amenity_count = [self.search(lat, lon) for lat, lon in
                          zip(self.df_ads['latitude'], self.df_ads['longitude'])]
-        self.amenity_count_df = pd.DataFrame(amenity_count)
+        
+        self.df_ads_mapdata = pd.concat(
+            [self.df_ads.reset_index(drop=True), pd.DataFrame(amenity_count)], axis=1)
 
     def recode(self):
         """Some recoding"""
@@ -103,51 +107,28 @@ class Add_data:
 
     def merge_data(self):
         """Merge as columns to ads data"""
-        self.df_ads_mapdata = pd.concat(
-            [self.df_ads.reset_index(drop=True), self.amenity_count_df], axis=1)
+        
 
 
     def add_disctrics(self):
         """Adds electoral districts for creating a plotly choropleth"""
 
-        # Reading file
-        file = gpd.read_file(
-            "data/boundaries/Census2011_Electoral_Divisions_generalised20m.shp")
-
-        # Selecting relevant areas
-        file = file[(file.COUNTY == "02") |
-                    (file.COUNTY == "03") |
-                    (file.COUNTY == "04") |
-                    (file.COUNTY == "05")]
-
-        remove_areas = ["Kilsallaghan", "Swords-Glasmore", "Swords-Lissenhall", "Donabate",
-                        "Lusk", "Rush", "Ballyboghil", "Clonmethan", "Garristown", "Hollywood", "Holmpatrick",
-                        "Balbriggan Rural", "Balbriggan Urban", "Balscadden", "Skerries"]
-
-        file = file[~file['EDNAME'].isin(remove_areas)]
-
-        def largest_polygon(i):
-            """picks the largest polygon for multipolygon"""
-            x = [p.area for p in list(i)]
-            return(x.index(max(x)))
-
-        # Removing the multipolygons (using only first polygon)
-        file['geometry'] = [i[largest_polygon(
-            i)] if i.geom_type == 'MultiPolygon' else i for i in file.geometry]
-        file = file.to_crs({'init': 'epsg:4326'}).reset_index()
-
-        # Saving to geojson
-        file.to_file("data/boundaries/ED.geojson", driver="GeoJSON")
+        # File of polygons created with electoral_divisons.py
+        with open("data/boundaries/ED.geojson", 'r') as f:
+            districts = json.load(f)
 
         def name_area(lon, lat):
             """Testing whether coordinates are in polygon and returning the name of 
             electoral district"""
+            
             point = Point(lon, lat)
-            area = [point.within(polygon) for polygon in file.geometry]
-            return(file[area].EDNAME.values)
+            area = [point.within(polygon) for polygon in districts.geometry]
+            
+            return(districts[area].EDNAME.values)
 
         # Running the function for each point in the data
         self.df_ads_mapdata["EDNAME"] = [name_area(lon, lat) for (lon, lat) in
                                          zip(self.df_ads_mapdata.longitude,
                                              self.df_ads_mapdata.latitude)]
+        
         self.df_ads_mapdata["EDNAME"] = self.df_ads_mapdata["EDNAME"].str[0]
