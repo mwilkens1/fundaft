@@ -1,4 +1,5 @@
 import geopandas as gpd
+import pickle
 
 # Reading file
 file = gpd.read_file(
@@ -26,5 +27,5 @@ file['geometry'] = [i[largest_polygon(
     i)] if i.geom_type == 'MultiPolygon' else i for i in file.geometry]
 file = file.to_crs({'init': 'epsg:4326'}).reset_index()
 
-# Saving to geojson
-file.to_file("data/boundaries/ED.geojson", driver="GeoJSON")
+# pickle to file
+pickle.dump(file, open("data/boundaries/ED.p", "wb"))

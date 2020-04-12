@@ -105,17 +105,11 @@ class Add_data:
         self.df_ads_mapdata['quarter'] = self.df_ads_mapdata['published_date'].dt.to_period(
             'Q').astype(str)
 
-    def merge_data(self):
-        """Merge as columns to ads data"""
-        
-
-
     def add_disctrics(self):
         """Adds electoral districts for creating a plotly choropleth"""
 
         # File of polygons created with electoral_divisons.py
-        with open("data/boundaries/ED.geojson", 'r') as f:
-            districts = json.load(f)
+        districts = pickle.load(open("data/boundaries/ED.p", "rb"))
 
         def name_area(lon, lat):
             """Testing whether coordinates are in polygon and returning the name of 
