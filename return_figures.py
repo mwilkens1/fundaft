@@ -2,14 +2,15 @@ import json
 import pandas as pd
 import numpy as np
 import plotly
+import pickle
 
 def return_figures(bedrooms, proptype, Q):
     
     bedrooms = int(bedrooms)
 
     #Load the data            
-    df_ads_mapdata = pd.read_pickle('data/df_ads_mapdata.pkl')
-
+    df_ads_mapdata = pd.read_csv('data/df_ads_mapdata.csv')
+    
     #Selection for the property type plot
     df_proptype = df_ads_mapdata[['price','property_type','beds','quarter']].copy()
     df_proptype["logprice"] = np.log(df_proptype.price)
@@ -71,6 +72,8 @@ def return_figures(bedrooms, proptype, Q):
     fig2 = dict(x=df_cheap.price, y=df_cheap.EDNAME)
 
     #Price over time plot
+    df_ads_mapdata.published_date = pd.to_datetime(
+        df_ads_mapdata.published_date)
     df = df_ads_mapdata.loc[df_ads_mapdata['published_date'] >= '05-2019']
     df = df.groupby("month")[['price']].median().reset_index()
     fig3 = dict(x=df.month,y=df.price)
@@ -99,14 +102,3 @@ def return_figures(bedrooms, proptype, Q):
     figuresJSON = json.dumps(figures, cls=plotly.utils.PlotlyJSONEncoder)
 
     return(figuresJSON)
-
-
-df_ads_mapdata = pd.read_pickle('data/df_ads_mapdata.pkl')
-df_proptype = df_ads_mapdata[[
-    'price', 'property_type', 'beds', 'quarter']].copy()
-df_proptype["logprice"] = np.log(df_proptype.price)
-df_proptype = df_proptype[df_proptype['property_type'].isin(['apartment', 'detached',
-                                                             'semi-detached', 'terraced'])]
-df_proptype = df_proptype.dropna(subset=['property_type', 'logprice'])
-#Order by price
-new_order = df_proptype.groupby("property_type").price.median().sort_index(ascending=False).index.to_list()

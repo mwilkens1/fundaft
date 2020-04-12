@@ -27,5 +27,6 @@ file['geometry'] = [i[largest_polygon(
     i)] if i.geom_type == 'MultiPolygon' else i for i in file.geometry]
 file = file.to_crs({'init': 'epsg:4326'}).reset_index()
 
-# pickle to file
+# pickle to file and to geojson
+file.to_file("data/boundaries/ED.geojson", driver="GeoJSON")
 pickle.dump(file, open("data/boundaries/ED.p", "wb"))
