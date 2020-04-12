@@ -40,4 +40,4 @@ df_ads_mapdata = df_ads_mapdata.drop_duplicates()
 len(df_ads_mapdata)
 
 # Saves to file
-df_ads_mapdata.to_csv('data/df_ads_mapdata.csv', index=False)
+df_ads_mapdata.to_csv('data/df_ads_mapdata.csv', index=False) 
