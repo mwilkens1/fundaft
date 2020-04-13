@@ -3,6 +3,7 @@ import numpy as np
 import geopy.distance
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
+from sklearn.ensemble import IsolationForest
 
 class MLpipeline:
     """
@@ -37,7 +38,7 @@ class MLpipeline:
         stephens_green = (53.3382, -6.2591)
         self.data["dist_to_centre"] = self.data.apply(\
             lambda x: geopy.distance.distance((x.latitude, x.longitude),
-                                               stephens_green).km, axis=1)
+                                              stephens_green).km, axis=1)
         
         # Dropping rows with missing price
         self.data = self.data.dropna(subset=['price'])
@@ -65,6 +66,11 @@ class MLpipeline:
     
     def build_model(self):
         """
+
+        1. Outlier removal
+        2. Imputation
+        3. Rescaling / one hot encoding
+
         """
         
         # The preprocessing pipeline will be different for numerical and 
@@ -82,7 +88,7 @@ class MLpipeline:
             numeric_features.remove(x)        
         
 
-        
+
 
     def evaluate_model(self):
         pass

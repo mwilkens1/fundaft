@@ -35,9 +35,12 @@ df_ads_mapdata = df_ads_mapdata_old.append(
     add_data.df_ads_mapdata, ignore_index=True, sort=True)
 
 # Removing any duplicates
-df_ads_mapdata = df_ads_mapdata.drop_duplicates()
+# Some duplicates arise because an ad has been updated. We keep the last.
+df_ads_mapdata = df_ads_mapdata.drop_duplicates("ad_id", keep="last")
 
 len(df_ads_mapdata)
 
 # Saves to file
 df_ads_mapdata.to_csv('data/df_ads_mapdata.csv', index=False) 
+
+
