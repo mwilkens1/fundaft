@@ -75,8 +75,8 @@ def return_figures(bedrooms, proptype, Q):
     df_ads_mapdata.published_date = pd.to_datetime(
         df_ads_mapdata.published_date)
     df = df_ads_mapdata.loc[df_ads_mapdata['published_date'] >= '05-2019']
-    df = df.groupby("month")[['price']].median().reset_index()
-    fig3 = dict(x=df.month,y=df.price)
+    df = df.groupby("published_date")['price'].mean().rolling(60).mean().reset_index().dropna()
+    fig3 = dict(x=df.published_date, y=df.price) 
 
     #Property_types plot
     df_proptype = df_proptype.dropna(subset=['property_type', 'logprice'])
