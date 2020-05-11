@@ -1,22 +1,37 @@
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import geopy.distance
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import IsolationForest
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.base import BaseEstimator, TransformerMixin
+
+from sklearn.metrics import mean_squared_error
+
+import seaborn as sns
+sns.set()
+sns.set_style("white")
 
 class MLpipeline:
     """
     description
     """
 
-    def __init__(self, data, xlist):
-        """Initiates class, recodes variables, selects variables 
-        and seperates y from x"""
-
+    def __init__(self, data):
+        """
+        Initiates class
+        """
         self.data = data #dataframe
 
-        # Recodes
+    def prep_data(self, xlist):
+        """
+        Recodes variables, selects variables and seperates y from x
+        """
+
         # Coding some time variables
         self.data['published_date'] = pd.to_datetime(self.data.published_date)
         self.data['month'] = self.data['published_date'].dt.to_period('M') \
@@ -50,52 +65,94 @@ class MLpipeline:
         # Seperate into X and y
         # Taking the log price because of the skewed disribution      
         self.y = np.log(self.data.price)
-        self.X = self.data.drop(["price"], axis=1)   
-
-
-    def split_data(self, test_size=0.2, random_state=42):
-        """Splits data into training and testing sets"""
-
-        self.X_train, self.X_test, self.y_train, self.y_test = \
-        train_test_split(self.X, self.y, 
-                        test_size=test_size, random_state=random_state)
+        self.X = self.data.drop(["price"], axis=1)     
         
-        print("Rows in training data: {}".format(len(self.X_train)))
-        print("Rows in testing data: {}".format(len(self.X_test)))
 
-    
-    def build_model(self):
+    def build_preprocessor(self, X_train):
         """
+        Imputes missing values, one hot encodes categorical variables, 
+        scales numerical variables and removes outliers.
 
-        1. Outlier removal
-        2. Imputation
-        3. Rescaling / one hot encoding
-
+        Returns a pipeline for a preprocessor 
         """
         
+        self.X_train = X_train
+
         # The preprocessing pipeline will be different for numerical and 
         # categorical variables so these will be split up. To do that we need
         # to have the names of each.
 
         # Get list of categorical features
-        categorical_features = self.X_train.columns[ \
+        categorical_features = self.X_train.columns[
             self.X_train.dtypes == object].tolist()
 
         # Get list of numeric features
         numeric_features = list(self.X_train.columns)
 
         for x in categorical_features:
-            numeric_features.remove(x)        
+            numeric_features.remove(x)
+
+        #Setting up the preprocessing pipeline
+
+        # For categorical variables...        
+        categorical_transformer = Pipeline(steps=[
+            # impute with most frequent
+            ('imputer', SimpleImputer(strategy='most_frequent')),
+            # and one hot encode
+            ('onehot', OneHotEncoder(handle_unknown='ignore'))])
+
+        #For numeric variables ...
+        numeric_transformer = Pipeline(steps=[
+            # impute with median
+            ('imputer', SimpleImputer(strategy='median')),
+            # rescale
+            ('scaler', StandardScaler())])
+
+        #Combine using columntransformer
+        self.preprocessor = ColumnTransformer(
+            transformers=[
+                ('num', numeric_transformer, numeric_features),
+                ('cat', categorical_transformer, categorical_features)])   
+
+    def fit_model(self, y_train, estimator, parametersGrid):
+        """
+        """
         
+        model = Pipeline([('preprocessor', self.preprocessor),
+                          ('estimator', estimator)])
 
+        grid = GridSearchCV(model, parametersGrid, cv=3, n_jobs=-1)
 
+        self.grid_fitted = grid.fit(self.X_train, y_train)       
 
-    def evaluate_model(self):
-        pass
+    def evaluate_model(self, X_test, y_test):
+        """
+
+        """
+
+        y_pred = self.grid_fitted.predict(X_test)
+
+        r2 = self.grid_fitted.score(X_test, y_test)
+        rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+
+        print("R squared: {:.4f}".format(r2))
+        print("RMSE: {:.4f}".format(rmse))
+        print("Tuned best parameters: {}".format(self.grid_fitted.best_params_))
+
+        sns.distplot(y_test, hist=False, kde=True,
+                    kde_kws={'shade': True, 'linewidth': 3},
+                    label="Test set")
+        sns.distplot(y_pred, hist=False, kde=True,
+                    kde_kws={'shade': True, 'linewidth': 3},
+                    label="Predicted")
+        plt.xlabel("log(price)")
+        plt.title("Prediction v test")        
+        plt.tight_layout()
+        plt.show()
 
     def save_model(self):
         pass
 
 
-    
+
 
