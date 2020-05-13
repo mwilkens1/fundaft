@@ -5,9 +5,10 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
-from sklearn.impute import SimpleImputer, KNNImputer
+from sklearn.impute import SimpleImputer
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.metrics import mean_squared_error
+import pickle
 
 import plotly.graph_objects as go
 
@@ -94,9 +95,8 @@ class MLpipeline:
 
         #For numeric variables
         numeric_transformer = Pipeline(steps=[
-            # impute with median
-            ('imputer', KNNImputer(n_neighbors=5, weights='uniform')),
-            #('imputer', SimpleImputer(strategy='median')),
+            # impute with median          
+            ('imputer', SimpleImputer(strategy='median')),
             # rescale
             ('scaler', StandardScaler())])
 
@@ -143,8 +143,11 @@ class MLpipeline:
         self.fit_model()
         self.evaluate_model()
 
-    def save_model(self):
-        pass
+    def save_model(self, model_filepath):
+        """Pickles model"""
+        with open(model_filepath, 'wb') as file:
+            pickle.dump(self.grid_fitted.best_estimator_, file)
+
 
 
 
