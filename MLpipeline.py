@@ -5,14 +5,11 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
-from sklearn.impute import SimpleImputer
+from sklearn.impute import SimpleImputer, KNNImputer
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.metrics import mean_squared_error
 import pickle
-
 import plotly.graph_objects as go
-
-#recode all price types to 'normal' to make sure it shows the 'real' value
 
 class prep_data(BaseEstimator, TransformerMixin):
     """
@@ -25,22 +22,26 @@ class prep_data(BaseEstimator, TransformerMixin):
         return(self)
 
     def transform(self, X):
+
+        rows_begin = X.shape[0]
+
         # # Coding some time variables
         X['published_date'] = pd.to_datetime(X.published_date)
         X['month'] = X['published_date'].dt.to_period('M').astype(str)
-        X['year'] = X['published_date'].dt.to_period('Y').astype(str)
+        X['year'] = X['published_date'].dt.to_period('Y').astype(str)        
 
-        # # Detecting whether parking is mentioned in the add facility list
-        X['parking'] = X.facility.str.contains('parking', case=False, regex=False)
-        # # Many adds do not have a facility list. Could be that there are
-        # # facilities but that the list is not filled in. I am assuming there are
-        # # no facilities.
-        X.parking.fillna(False, inplace=True)
+        # Seperating the string of facilities into dummies
+        dummies = X.facility.str.get_dummies(sep=',')
+        X = pd.concat([X, dummies], axis=1)
+
+        # True if only one unit is sold. If multiple units, its probably
+        # a new development so pricier. 
+        X['one_unit'] = X.no_of_units.value_counts().isna()
 
         # # Only special price types have a value so the na's are replaced with
         # # the string 'normal'
         X.price_type.fillna('Normal', inplace=True)
-
+        
         # # Calculate distance to centre (St. Stephens Green park)
         stephens_green = (53.3382, -6.2591)
         X["dist_to_centre"] = X.apply(
@@ -49,7 +50,9 @@ class prep_data(BaseEstimator, TransformerMixin):
 
         # Select variables
         X = X[self.xlist]
-
+        
+        assert X.shape[0] == rows_begin
+        
         return(X)
 
 class MLpipeline:
@@ -64,10 +67,12 @@ class MLpipeline:
         self.y = np.log(data.price)
         self.X = data.drop(["price"], axis=1)
 
+
     def split_data(self, test_size=0.2):
         self.X_train, self.X_test, self.y_train, self.y_test = \
             train_test_split(self.X, self.y, 
             test_size=test_size, random_state=42)
+
 
     def set_estimator(self, estimator, parametersGrid,
                           xlist, numeric_features, categorical_features):
@@ -76,6 +81,7 @@ class MLpipeline:
         self.xlist = xlist
         self.numeric_features = numeric_features
         self.categorical_features = categorical_features
+
 
     def build_preprocessor(self):
         """
@@ -87,7 +93,7 @@ class MLpipeline:
         # The preprocessing pipeline will be different for numerical and 
         # categorical variables so these will be split up.
 
-        # For categorical variables        
+        # # For categorical variables        
         categorical_transformer = Pipeline(steps=[
             # impute with most frequent
             ('imputer', SimpleImputer(strategy='most_frequent')),
@@ -97,7 +103,7 @@ class MLpipeline:
         #For numeric variables
         numeric_transformer = Pipeline(steps=[
             # impute with median          
-            ('imputer', SimpleImputer(strategy='median')),
+            ('imputer', KNNImputer(n_neighbors=10)),
             # rescale
             ('scaler', StandardScaler())])
 
@@ -106,6 +112,7 @@ class MLpipeline:
             transformers=[
                 ('num', numeric_transformer, self.numeric_features),
                 ('cat', categorical_transformer, self.categorical_features)]) 
+
 
     def fit_model(self, cv=3):
         """
@@ -117,6 +124,7 @@ class MLpipeline:
         grid = GridSearchCV(model, self.parametersGrid, cv=cv, n_jobs=-1)
 
         self.grid_fitted = grid.fit(self.X_train, self.y_train)       
+
 
     def evaluate_model(self):
         """
@@ -143,6 +151,7 @@ class MLpipeline:
         self.build_preprocessor()
         self.fit_model()
         self.evaluate_model()
+
 
     def save_model(self, model_filepath):
         """Pickles model"""

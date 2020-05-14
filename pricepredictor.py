@@ -70,7 +70,8 @@ class PricePredictor():
                        'ad_id','property_title','published_date','no_of_photos', 
                        'advertising_type','currency','price_type', 'price',
                        'bathrooms', 'beds', 'facility','open_viewing', 
-                       'ber_classification', 'surface','property_type','ad_ids']
+                       'ber_classification', 'surface','property_type','ad_ids',
+                       'no_of_units']
 
         # If any of the required columns are missing
         if pd.Series(cols_needed).isin(df.columns).all() == False:          
@@ -80,9 +81,29 @@ class PricePredictor():
             for col in pd.Series(cols_needed).isin(df.columns):
                 if col == False:
                     #... and give them nan value
+                    # Then the imputers in the pipeline will take
+                    # care of the rest
                     df[cols_needed[i]] = np.nan
 
                 i += 1                
+
+        # For the facilities variable, dummies are created in the prep data
+        # transformer. However, if some categories are not there they won't be
+        # created.This is corrected here by setting them to np.nan. Imputer 
+        # will take take of the rest.
+        facilities = ['Alarm', 'Gas Fired Central Heating', 
+            'Oil Fired Central Heating',
+            'Parking', 'Wheelchair Access', 'Wired for Cable Television']
+         
+        if df.facility[0]=='':
+            for facility in facilities:
+                df[facility] = np.nan
+
+        # Setting the price type to 'normal'. In case the ad for example has a 
+        # 'range' or 'starting from' price type, we want the prediction to
+        # reflect the actual worth, not the price you would expect given the 
+        # price type. 
+        df['price_type'] = 'Normal'
 
         # Then the data is enriched with the openstreetmap data and some 
         # recodes are applied
