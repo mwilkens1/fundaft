@@ -28,6 +28,7 @@ class prep_data(BaseEstimator, TransformerMixin):
         # # Coding some time variables
         X['published_date'] = pd.to_datetime(X.published_date)
         X['month'] = X['published_date'].dt.to_period('M').astype(str)
+        X['year'] = X['published_date'].dt.to_period('Y').astype(str)
 
         # # Detecting whether parking is mentioned in the add facility list
         X['parking'] = X.facility.str.contains('parking', case=False, regex=False)
