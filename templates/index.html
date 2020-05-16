@@ -71,6 +71,7 @@
         <h5 class="sidebar-subheading mt-3">Quarter</h5>
         <select class="form-control form-control-sm filter" id='Q'>
           <option value="all">All</option>
+          <option value="2020Q2">Q2-2020</option>
           <option value="2020Q1">Q1-2020</option>
           <option value="2019Q4">Q4-2019</option>
           <option value="2019Q3">Q3-2019</option>
@@ -85,28 +86,7 @@
         <ul class="navbar-nav mr-auto ">
           <li class="nav-item active bg-light rounded ">
             <a href="#menu-toggle" class="nav-link" id="menu-toggle">Plot controls</a>
-          </li>
-          <li class="nav-item active bg-light rounded">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item bg-light rounded">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item dropdown bg-light rounded">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Dropdown
-            </a>
-            <div class="dropdown-menu bg-light rounded" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-          <li class="nav-item bg-light rounded">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-          </li>
+          </li>          
         </ul>
 
         <div class="navbar-brand bg-transparent rounded">
@@ -126,71 +106,144 @@
 
     </nav>
 
-    <div class="container-fluid" style="float: left">
-      <div class="row">        
-        <div clas="col-auto">
-          <div class="row">
-            <div class="col-auto">
-              <div class="col-auto card rounded bg-light ml-4 mt-4 mb-4 p-1" style="width: 560px; height: 600px;">
-                <div class="card-body">
-                  <h5 class="card-title">Asking price on Daft.ie</h5>
-                  <div class="card-text">Median price per area (x1000€)</div>
-                  <div class="mt-1" id="cmap"></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-auto">
-              <div class="card rounded bg-light mr-2 mt-4 p-1" style="width: 320px; height: 296px;">
-                <div class="card-body">
-                  <h5 class="card-title">Most expensive areas</h5>
-                  <div class="card-text">Median price per areas (x1000€)</div>
-                  <div  id="exp_plot"></div>
-                </div>
-              </div>
-              <div class="card rounded bg-light mr-2 mt-2 mb-4 p-1" style="width: 320px; height: 296px;">
-                <div class="card-body">
-                  <h5 class="card-title">Cheapest area</h5>
-                  <div class="card-text">Median price per area (x1000€)</div>
-                  <div id="cheap_plot"></div>
-                </div>
-              </div> 
-            </div>
-          </div>
-        </div>
-        <div class="col-auto">
-          <div class="row">
-            <div class="col">
-              <div class="card rounded bg-light mt-4 p-1" style="width: 830px; height: 218px;">
-                <div class="card-body">
-                  <h5 class="card-title">Price development on Daft.ie (x1000€)</h5>
-                  <div id="price_time"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <div class="row">
-                <div class="col-6">
-                  <div class="card rounded bg-light mt-4 p-1" style="width: 400px; height: 360px;">
-                    <div class="card-body">
-                      <h5 class="card-title">Property types</h5>
-                      <div id="proptype"></div>
+    <!-- Header -->
+    <div class="row">
+      <div class="col-auto">
+        <h1 style="margin-left: 20px; margin-top: 20px">Dublin Property Value Estimator</h1>
+        <p style="margin-left: 20px; margin-top: 5px">
+          Explore Dublin's residential property market and estimate the value of a propery advertised on Daft.ie. 
+          All data on this page is retrieved from Daft.ie for Dublin city. 
+        </p>
+      </div>
+    </div>
+    
+    <!-- here the content starts -->
+    <div class="row"> 
+      <div class="col-auto">
+        <div class="row">
+          <div class="col">
+            <!-- Section with the property price estimator -->
+            <div class="card rounded bg-light mt-4 p-1" style="width: 916px;">
+              <div class="card-body">
+                <h5 class="card-title">Property value estimation</h5>
+                <p>Find an ad for a Dublin property listed on 
+                <a href="https://www.daft.ie/dublin-city/property-for-sale/" target="_blank">
+                  Daft.ie for Dublin city
+                </a> and paste the link to the ad of the property in the box below and click 'Estimate value' to get an esimated value of the property.</p>
+
+                  <div class="row" style="margin-left: 2px; margin-right: 10px; margin-bottom:10px ">
+                      <input style="width: 80%" type="text" class="form-control form-control-lg change_ad_url" name="url" placeholder="Enter link to Dublin property listing on Daft.ie">
+                      <button style="width: 20%" type="submit" class="btn btn-lg btn-success">Estimate value</button>
+                  </div>
+                                    
+                  <div class="row">
+                    <div class="col-6">
+
+                      <h6 id="property_title"></h6>
+                      <div id="image_of_ad"></div>
+
+                    </div>
+
+                    <div class="col-6">                       
+                      <h6>Number of amenities near the property (<a href='https://www.openstreetmap.org'>openstreetmap.org</a>)</h6> 
+                      <div id="amenity_plot"></div>
+
                     </div>
                   </div>
-                </div>
-                <div class="col-6">
-                  <div class="card rounded bg-light mt-4 p-1" style="width: 400px; height: 360px;">
-                    <div class="card-body">
-                      <h5 class="card-title">Number of bedrooms</h5>
-                      <div id="bedrooms"></div>
+ 
+                  <div class="row" style="margin-top:22px;">
+                    
+                    <div class="col-6">
+                      <h6 style="text-align: center">Asking price:</h6>
+                      <h3 style="text-align: center" id="ad_price"></h6>
                     </div>
-                  </div>  
-                </div>
+                    <div class="col-6">
+                      <h6 style="text-align: center">Estimated value:</h6>
+                      <h3 style="text-align: center" id="est_value"></h6>                        
+                    </div> 
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <p style="font-size: 12px;">*Based on machine learning model that takes into account the dimenions of the property
+                        (surface area, bed and
+                        bathrooms),
+                        its location, the propery type (e.g. apartment), the amenities in a 0.5 km radius, facilities of the property
+                        and BER classificaiton. It does not take into account aesthetics or other factors such as the need for renovation.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  
               </div>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Other plots -->
+      <div clas="col-auto">
+        <div class="row">
+          <div class="col-auto">
+            <div class="col-auto card rounded bg-light ml-4 mt-4 mb-4 p-1" style="width: 560px; height: 600px;">
+              <div class="card-body">
+                <h5 class="card-title">Asking price on Daft.ie</h5>
+                <div class="card-text">Median price per area (x1000€)</div>
+                <div class="mt-1" id="cmap"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="card rounded bg-light mr-2 mt-4 p-1" style="width: 320px; height: 296px;">
+              <div class="card-body">
+                <h5 class="card-title">Most expensive areas</h5>
+                <div class="card-text">Median price per areas (x1000€)</div>
+                <div  id="exp_plot"></div>
+              </div>
+            </div>
+            <div class="card rounded bg-light mr-2 mt-2 mb-4 p-1" style="width: 320px; height: 296px;">
+              <div class="card-body">
+                <h5 class="card-title">Cheapest area</h5>
+                <div class="card-text">Median price per area (x1000€)</div>
+                <div id="cheap_plot"></div>
+              </div>
+            </div> 
+          </div>
+        </div>
+      </div>
+      <div class="col-auto">
+        <div class="row">
+          <div class="col">
+            <div class="card rounded bg-light mt-4 p-1" style="width: 830px; height: 218px;">
+              <div class="card-body">
+                <h5 class="card-title">Price development on Daft.ie (x1000€)</h5>
+                <div id="price_time"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="row">
+              <div class="col-6">
+                <div class="card rounded bg-light mt-4 p-1" style="width: 400px; height: 360px;">
+                  <div class="card-body">
+                    <h5 class="card-title">Property types</h5>
+                    <div id="proptype"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="card rounded bg-light mt-4 p-1" style="width: 400px; height: 360px;">
+                  <div class="card-body">
+                    <h5 class="card-title">Number of bedrooms</h5>
+                    <div id="bedrooms"></div>
+                  </div>
+                </div>  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -240,6 +293,10 @@
     Plotly.newPlot(cmap, data, layout, config);
 
     //Expensive and cheap neighbourhoods plots
+
+    exp_plot   = document.getElementById('exp_plot');
+    cheap_plot = document.getElementById('cheap_plot');
+
     var layout = {
       paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
@@ -248,9 +305,7 @@
       xaxis: { showgrid: false, zeroline: false, },
       font: {size: 10}
     };
-
-    cmap = document.getElementById('exp_plot');
-
+    
     var data = [{
       type: 'bar',
       x: figures[1].x,
@@ -262,9 +317,7 @@
       }
     }];
 
-    Plotly.newPlot(exp_plot, data, layout,  { displayModeBar: false });
-
-    cmap = document.getElementById('cheap_plot');
+    Plotly.newPlot(exp_plot, data, layout,  { displayModeBar: false });  
 
     var data = [{
       type: 'bar',
@@ -346,6 +399,48 @@
 
 
   plots(figures)
+  
+  // Here two variables are created for the initial ad that is displayed on the page
+  // That ad is the top listed ad on daft.ie for Dublin city.
+  var data = {{ initial_ad_data | safe}};
+  // This variable is to create the amenities plot
+  var amenities_data = {{ amenities_data | safe}};
+  
+  document.getElementById("property_title").innerHTML = data[0];
+  document.getElementById("est_value").innerHTML = data[1] + "*";
+  document.getElementById("image_of_ad").innerHTML = `<img src="${data[2]}" height="250" >`;
+  document.getElementById("ad_price").innerHTML = data[3];  
+
+  //Function for creating the amenities plot  
+  function plot_amenities(amenities_data) {  
+
+    amenity_plot = document.getElementById('amenity_plot');
+
+    var layout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      width: 350, height: 250,
+      margin: { l: 100, r: 0, b: 25, t: 5 },
+      xaxis: { showgrid: false, zeroline: false, },
+      font: { size: 10 }
+    };
+
+    var data = [{
+      type: 'bar',
+      x: amenities_data.y,
+      y: amenities_data.x,
+      orientation: 'h',
+      marker: {
+        color: 'rgb(255,0,0)',
+        opacity: 0.6
+      }
+    }];
+
+    Plotly.newPlot(amenity_plot, data, layout, { displayModeBar: false });  
+
+    }
+
+  plot_amenities(amenities_data)
 
 </script>
 
@@ -365,7 +460,7 @@
       $("#wrapper").toggleClass("toggled");
     });
 
-
+    // THis ensures the data is updated when the plot controls are changed
     $('.filter').change(function() {
 
         $.getJSON({
@@ -381,6 +476,28 @@
         });
 
     });
+    
+    // This scrapes the ad pasted in the box and returns the data
+    $('.change_ad_url').change(function () {
+
+      $.getJSON({
+        url: "/change_ad_url",      
+        data: {'url': $("input[name='url']").val()},
+        success: function (data) {
+
+          document.getElementById("property_title").innerHTML = data[0][0];
+          document.getElementById("est_value").innerHTML = data[0][1] + "*";
+          document.getElementById("image_of_ad").innerHTML = `<img src="${data[0][2]}" height="250" >`;
+          document.getElementById("ad_price").innerHTML = data[0][3];
+   
+          plot_amenities(data[1])       
+
+        }
+      });
+
+    });
+
+  
 
 </script>
 

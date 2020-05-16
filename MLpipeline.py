@@ -14,6 +14,10 @@ import plotly.graph_objects as go
 class prep_data(BaseEstimator, TransformerMixin):
     """
     Custom transformer that recodes and transforms data
+
+    INPUT
+    xlist - list of variables that should be included in the model 
+
     """
     def __init__(self, xlist):
         self.xlist = xlist
@@ -22,7 +26,24 @@ class prep_data(BaseEstimator, TransformerMixin):
         return(self)
 
     def transform(self, X):
+        """
+        Transformer method that creates additional variables derived from 
+        existing variables in the dataset. 
 
+        Variables created:
+        - month: month in which the ad was published
+        - year: year in which the ad was published
+        - Dummy variables for all possible categories in the 'facility' 
+          variable
+        - dist_to_centre: distance between the property and St. Stephens Green
+        - one_unit: true if only one unit is sold
+
+        Finally, the price_type variable's na values are filled with 'normal' 
+        because it is nan by default in case the price type is normal.
+
+        Returns a transformed dataset.
+
+        """
         rows_begin = X.shape[0]
 
         # # Coding some time variables
@@ -57,25 +78,42 @@ class prep_data(BaseEstimator, TransformerMixin):
 
 class MLpipeline:
     """
-    description
+    Machine learning pipeline for predicting the (log) price of a property advertised
+    on Daft.ie.
+
+    The class is instantiated by providing the full dataset and includes 
+    methods for splitting into training / testing data, choosing an estimator,
+    building a preprocessor, fitting the model, evaluating the model and 
+    saving the model.  
     """
 
     def __init__(self, data):
         """
         Instantiate class
         """
-        self.y = np.log(data.price)
+        self.y = np.log(data.price) #Taking the log here
         self.X = data.drop(["price"], axis=1)
 
-
     def split_data(self, test_size=0.2):
+        """
+        Splits the data into testing and training data
+        """
         self.X_train, self.X_test, self.y_train, self.y_test = \
             train_test_split(self.X, self.y, 
             test_size=test_size, random_state=42)
 
-
     def set_estimator(self, estimator, parametersGrid,
                           xlist, numeric_features, categorical_features):
+        """
+        Set an estimator, parametergrid and list of variables
+        
+        Inputs:
+        Estimator =  estmator class (e.g. LinearRegression())
+        parametersGrid = grid of parameters for gridsearch
+        xlist = full list of features to be included in the model
+        numeric_features = list of xlist features that are numeric
+        categorical_features = list of xlist features that are categorical
+        """
         self.estimator = estimator
         self.parametersGrid = parametersGrid
         self.xlist = xlist
@@ -86,9 +124,19 @@ class MLpipeline:
     def build_preprocessor(self):
         """
         Imputes missing values, one hot encodes categorical variables, 
-        scales numerical variables and removes outliers.
+        scales numerical variables and removes outliers. Columntransformer
+        is applied to have different pipelines for categorical and numerical 
+        features. The following preprocessing steps are applied:
 
-        Returns a pipeline for a preprocessor 
+        Categorical features (self.categorical_features):
+        - SimpleImputer with strategy 'most_frequent'
+        - OneHotEncoder
+
+        Numeric features (self.numeric_features)
+        - KNNimputer with 10 nearest neighbors
+        - StandardScaler
+
+        Returns a pipeline for a preprocessor (self.preprocessor)
         """
         # The preprocessing pipeline will be different for numerical and 
         # categorical variables so these will be split up.
@@ -116,6 +164,21 @@ class MLpipeline:
 
     def fit_model(self, cv=3):
         """
+        Fits the model using the estimator provided to 'set_estimator' and the
+        preprocessor built with 'build_preprocessor'
+
+        GridSearchCV is applied over the parametersGrid provided to 
+        'set_estimator' unless empty paramtersGrid provided.
+
+        Data used is self.X_train and self.y_train, which are produced by
+        'split data'
+
+        Inputs:
+        cv: number of folds for cross validation. Default is 3.
+
+        Returns: 
+        self.grid_fitted: fitted GridSearchCV
+
         """        
         model = Pipeline([('prep_data', prep_data(self.xlist)),
                           ('preprocessor', self.preprocessor),
@@ -128,7 +191,19 @@ class MLpipeline:
 
     def evaluate_model(self):
         """
+        Evaluate model fit
 
+        Method that takes the fitted model produced by 'fit model' and predicts
+        on self.X_test and compares to self.y_test. 
+
+        Output:
+        self.r2: R-squared (also printed to console)
+        self.RMSE: Root Mean Squared Error (also printed to console)
+
+        Additional printed output:
+        Best parameters of gridsearchCV
+        Scatter plot of the log price in the test data and the predicted 
+        log price.
         """
 
         self.y_pred = self.grid_fitted.predict(self.X_test)
@@ -147,18 +222,13 @@ class MLpipeline:
         fig.show()
 
     def run(self):
+        """Wrapper method from splitting data to evaluating model"""
         self.split_data()
         self.build_preprocessor()
         self.fit_model()
         self.evaluate_model()
 
-
     def save_model(self, model_filepath):
         """Pickles model"""
         with open(model_filepath, 'wb') as file:
             pickle.dump(self.grid_fitted.best_estimator_, file)
-
-
-
-
-

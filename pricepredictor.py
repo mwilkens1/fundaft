@@ -16,44 +16,54 @@ class PricePredictor():
         # Reads in the model to predict the price
         self.model = joblib.load("model/model.pkl")
 
-    def parse_data(self, url):
+    def get_soup(self,url):
         """
-        Function to parse the data of a given Daft.ie URL
+        Function to get the soup from a Daft.ie ad
 
         Input:
         url = a URL of an ad on daft.ie
 
         Output:
-        data = scraped data from daft.ie
-
+        soup = scraped html of the ad
         """
         # This header is required for Daft.ie
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/'
-                            '537.36 (KHTML, like Gecko) Chrome/41.0.22'
-                            '28.0 Safari/537.36'}
+                   '537.36 (KHTML, like Gecko) Chrome/41.0.22'
+                   '28.0 Safari/537.36'}
 
         # Get the page of the ad
-        #r = requests.get(url, headers=headers, timeout=3)        
+        #r = requests.get(url, headers=headers, timeout=3)
         attempt = 1
         max_attempts = 5
-        while attempt <= max_attempts :
+        while attempt <= max_attempts:
             try:
                 r = requests.get(url, headers=headers, timeout=3)
                 break
-            except:                
+            except:
                 print("Attempt {} failed".format(attempt))
-                if attempt==max_attempts:
+                if attempt == max_attempts:
                     print("Failed to retrieve data")
                     return
-                attempt += 1 
-        
+                attempt += 1
+
         # Parse the content
-        soup = BeautifulSoup(r.text, 'lxml')
+        self.soup = BeautifulSoup(r.text, 'lxml')
+
+    def get_image(self):
+        """Get the url of the image of the ad"""      
+
+        self.image_url = self.soup.find_all('img', 
+        style=lambda style: style and "max-height: 525px" in style)[0]['src']
+
+    def parse_data(self):
+        """
+        Function to parse the data of a given Daft.ie URL
+        """
 
         # All the data we need is stored in one javascript variable
         pattern = re.compile(r"var trackingParam = (.*?);$", 
                                 re.MULTILINE | re.DOTALL)
-        script = soup.find("script", text=pattern)
+        script = self.soup.find("script", text=pattern)
         data = pattern.search(script.text).group(1)
 
         # The data is converted into a dictionary 
@@ -111,10 +121,17 @@ class PricePredictor():
         add_data.add_amenities()
         add_data.add_disctrics()
         add_data.recode()
-
+       
         self.data = add_data.df_ads_mapdata
 
+
     def predict_price(self):
+        """
+        Predicts price of property given the data in the ad enriched with
+        openstreetmap data
+
+        Returns the predicted price
+        """
 
         try: # if data exists
             # Returns a predicted price

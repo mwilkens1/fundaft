@@ -25,6 +25,8 @@ def return_figures(bedrooms, proptype, Q):
     df_bedrooms = pd.concat([df_ads_mapdata, br], axis=1)
     df_bedrooms["logprice"] = np.log(df_bedrooms.price)
 
+    df_time = df_ads_mapdata.copy()
+
     #Filters based on selections in the app
     if Q != 'all':
         df_ads_mapdata = df_ads_mapdata[df_ads_mapdata.quarter == Q]
@@ -33,21 +35,27 @@ def return_figures(bedrooms, proptype, Q):
     if bedrooms != 0:
         df_ads_mapdata = df_ads_mapdata[df_ads_mapdata.beds==bedrooms]
         df_proptype = df_proptype[df_proptype.beds == bedrooms]    
+        df_time = df_time[df_time.beds == bedrooms]
     elif bedrooms == 4:
         df_ads_mapdata = df_ads_mapdata[df_ads_mapdata.beds >= bedrooms]
         df_proptype = df_proptype[df_proptype.beds >= bedrooms]
+        df_time = df_time[df_time.beds >= bedrooms]
     if proptype == "detached":
         df_ads_mapdata = df_ads_mapdata[df_ads_mapdata.property_type == "detached"]
         df_bedrooms = df_bedrooms[df_bedrooms.property_type == "detached"]
+        df_time = df_time[df_time.property_type == "detached"]
     if proptype == "semi-detached":
         df_ads_mapdata = df_ads_mapdata[df_ads_mapdata.property_type == "semi-detached"]
         df_bedrooms = df_bedrooms[df_bedrooms.property_type == "semi-detached"]
+        df_time = df_time[df_time.property_type == "semi-detached"]
     if proptype == "terraced":
         df_ads_mapdata = df_ads_mapdata[df_ads_mapdata.property_type ==  "terraced"]
         df_bedrooms = df_bedrooms[df_bedrooms.property_type == "terraced"]
+        df_time = df_time[df_time.property_type == "terraced"]
     if proptype == "apartment":
         df_ads_mapdata = df_ads_mapdata[df_ads_mapdata.property_type == "apartment"]
         df_bedrooms = df_bedrooms[df_bedrooms.property_type == "apartment"]  
+        df_time = df_time[df_time.property_type == "apartment"]
 
     #Take the median for a number of plots per district
     df = df_ads_mapdata.groupby("EDNAME")[['price']].median().reset_index()
@@ -72,11 +80,11 @@ def return_figures(bedrooms, proptype, Q):
     fig2 = dict(x=df_cheap.price, y=df_cheap.EDNAME)
 
     #Price over time plot
-    df_ads_mapdata.published_date = pd.to_datetime(
-        df_ads_mapdata.published_date)
-    df = df_ads_mapdata.loc[df_ads_mapdata['published_date'] >= '05-2019']
-    df = df.groupby("published_date")['price'].mean().rolling(60).mean().reset_index().dropna()
-    fig3 = dict(x=df.published_date, y=df.price) 
+    df_time.published_date = pd.to_datetime(
+        df_time.published_date)
+    df_time = df_time.loc[df_time['published_date'] >= '05-2019']
+    df_time = df_time.groupby("published_date")['price'].mean().rolling(60).mean().reset_index().dropna()
+    fig3 = dict(x=df_time.published_date, y=df_time.price)
 
     #Property_types plot
     df_proptype = df_proptype.dropna(subset=['property_type', 'logprice'])
@@ -101,4 +109,12 @@ def return_figures(bedrooms, proptype, Q):
 
     figuresJSON = json.dumps(figures, cls=plotly.utils.PlotlyJSONEncoder)
 
-    return(figuresJSON)
+    return figuresJSON
+
+def return_amenities_plot():
+
+
+
+    figuresJSON = json.dumps(figures, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return figuresJSON
