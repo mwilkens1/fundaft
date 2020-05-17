@@ -1,6 +1,8 @@
 import geopandas as gpd
 import pickle
 
+# Data from https://www.cso.ie/en/census/census2011boundaryfiles/
+
 # Reading file
 file = gpd.read_file(
     "data/boundaries/Census2011_Electoral_Divisions_generalised20m.shp")
