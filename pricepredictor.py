@@ -61,10 +61,7 @@ class PricePredictor():
         """
 
         # All the data we need is stored in one javascript variable
-        pattern = re.compile(r"var trackingParam = (.*?);$", 
-                                re.MULTILINE | re.DOTALL)
-        script = self.soup.find("script", text=pattern)
-        data = pattern.search(script.text).group(1)
+        data = re.findall(r'(?<=trackingParam = ).*?(?=;)', str(self.soup))[0]
 
         # The data is converted into a dictionary 
         data_dict = eval(data.replace("null", "np.nan"))

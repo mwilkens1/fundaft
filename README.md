@@ -1,12 +1,30 @@
-# Daft.ie webscraping
-Webscraping [Daft.ie](http://www.daft.ie), the well-known property listing website of Ireland. Using the folium package, the plots below show heatmaps of the price (left) and the price per square meter (right).
+# Property valuation webapp Daft.ie
 
-<img src="images/heatmap_price.PNG" width="400"><img src="images/heatmap_pricesqm.PNG" width="400">
+### Table of Contents
 
-The average price of a detached house or an apartment with more than 3 bedrooms is well over a million. 1 bedroom apartments are close to half a million on average which is more than the average for 2 bedroom apartments.
+1. [Installation](#installation)
+2. [Project Motivation](#motivation)
+3. [File Descriptions](#files)
+4. [Results](#results)
+5. [Licensing, Authors, and Acknowledgements](#licensing)
 
-<img src="images/prices_property_type.png" width="450">
+## Installation <a name="installation"></a>
 
-The data is matched to data from [openstreetmap.org](http://www.openstreetmap.org) on the basis of latitude and longitude. The plot below shows the average number of amenities in a 500 meter radius around a property
+There should be no necessary libraries to run the code here beyond the Anaconda distribution of Python.  The code should run with no issues using Python version 3.
 
-<img src="images/amenities.png" width="450">
+## Project Motivation<a name="motivation"></a>
+
+
+
+
+## File Descriptions <a name="files"></a>
+
+
+
+## Results<a name="results"></a>
+
+
+
+## Licensing, Authors, Acknowledgements<a name="licensing"></a>
+
+Feel free to use the code. 

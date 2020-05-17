@@ -64,7 +64,7 @@ def return_figures(bedrooms, proptype, Q):
     
     # Choropleth map 
     with open("data/boundaries/ED.geojson") as json_file:
-                geojson = json.load(json_file)
+                geojson = json.load(json_file, encoding='utf-8')
     fig0 = dict(locations=df.EDNAME, 
                     z=df.logprice, 
                     geojson=geojson,
@@ -106,14 +106,6 @@ def return_figures(bedrooms, proptype, Q):
                 price=df_bedrooms.price)
 
     figures = [fig0,fig1,fig2,fig3,fig4,fig5]   
-
-    figuresJSON = json.dumps(figures, cls=plotly.utils.PlotlyJSONEncoder)
-
-    return figuresJSON
-
-def return_amenities_plot():
-
-
 
     figuresJSON = json.dumps(figures, cls=plotly.utils.PlotlyJSONEncoder)
 
