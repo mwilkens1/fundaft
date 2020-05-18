@@ -68,10 +68,7 @@ class Crawl_daft:
             'ad_type=sale&advanced=1&s%5Bdays_old%5D=' + \
             str(self.days_since_last_crawl-1) + \
             '&s%5Badvanced%5D=1&searchSource=sale'
-
-        print("Days since last crawl: {}".format(self.days_since_last_crawl))
-        print("URL: {}".format(self.start_urls))
-
+                    
     def crawl(self):
         process = CrawlerProcess()
         process.crawl(Daft_spider, start_urls=[self.start_urls]) 
