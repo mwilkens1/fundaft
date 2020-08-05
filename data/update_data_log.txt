@@ -5,3 +5,129 @@ Rows in previous dataset: 16565
 Number of new rows: 70
 Rows in updated dataset: 16635
  
+Date of crawl: 2020-05-22
+Days since last crawl: 2020-05-18
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 16635
+Number of new rows: 110
+Rows in updated dataset: 16745
+ 
+Date of crawl: 2020-05-26
+Days since last crawl: 2020-05-22
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 16745
+Number of new rows: 55
+Rows in updated dataset: 16800
+ 
+Date of crawl: 2020-05-31
+Days since last crawl: 2020-05-26
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=4&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 16800
+Number of new rows: 129
+Rows in updated dataset: 16929
+ 
+Date of crawl: 2020-06-06
+Days since last crawl: 2020-05-31
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=5&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 16929
+Number of new rows: 206
+Rows in updated dataset: 17135
+ 
+Date of crawl: 2020-06-11
+Days since last crawl: 2020-06-07
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 17346
+Number of new rows: 215
+Rows in updated dataset: 17561
+ 
+Date of crawl: 2020-06-15
+Days since last crawl: 2020-06-11
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 17561
+Number of new rows: 110
+Rows in updated dataset: 17670
+ 
+Date of crawl: 2020-06-19
+Days since last crawl: 2020-06-15
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 17670
+Number of new rows: 265
+Rows in updated dataset: 17935
+ 
+Date of crawl: 2020-06-24
+Days since last crawl: 2020-06-19
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=4&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 17935
+Number of new rows: 206
+Rows in updated dataset: 18141
+ 
+Date of crawl: 2020-06-27
+Days since last crawl: 2020-06-24
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=2&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 18141
+Number of new rows: 131
+Rows in updated dataset: 18272
+ 
+Date of crawl: 2020-07-01
+Days since last crawl: 2020-06-27
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 18272
+Number of new rows: 230
+Rows in updated dataset: 18502
+ 
+Date of crawl: 2020-07-07
+Days since last crawl: 2020-07-01
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=5&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 18502
+Number of new rows: 209
+Rows in updated dataset: 18711
+ 
+Date of crawl: 2020-07-09
+Days since last crawl: 2020-07-07
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=1&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 18711
+Number of new rows: 237
+Rows in updated dataset: 18948
+ 
+Date of crawl: 2020-07-14
+Days since last crawl: 2020-07-09
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=4&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 18948
+Number of new rows: 192
+Rows in updated dataset: 19140
+ 
+Date of crawl: 2020-07-19
+Days since last crawl: 2020-07-14
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=4&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 19140
+Number of new rows: 212
+Rows in updated dataset: 19352
+ 
+Date of crawl: 2020-07-22
+Days since last crawl: 2020-07-19
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=2&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 19352
+Number of new rows: 237
+Rows in updated dataset: 19589
+ 
+Date of crawl: 2020-07-26
+Days since last crawl: 2020-07-22
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 19589
+Number of new rows: 131
+Rows in updated dataset: 19720
+ 
+Date of crawl: 2020-07-29
+Days since last crawl: 2020-07-26
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=2&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 19720
+Number of new rows: 183
+Rows in updated dataset: 19903
+ 
+Date of crawl: 2020-08-02
+Days since last crawl: 2020-07-29
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 19903
+Number of new rows: 157
+Rows in updated dataset: 20059
+ 
