@@ -11,7 +11,6 @@ crawler = Crawl_daft()
 crawler.create_url()
 
 print("Date of crawl: {}".format(date.today()))
-
 print("Days since last crawl: {}".format(crawler.date_last_crawl))
 print("Starting URL: {}".format(crawler.start_urls))
 

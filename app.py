@@ -21,6 +21,7 @@ def get_ad_data(url):
           the url to the image of the property and its asking price.
 
     """
+
     ad.get_soup(str(url))
 
     ad.parse_data()

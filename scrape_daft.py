@@ -1,3 +1,4 @@
+from selenium import webdriver
 import scrapy
 from scrapy.crawler import CrawlerProcess
 import re
@@ -12,37 +13,53 @@ class Daft_spider(scrapy.Spider):
     """Crawler for Daft.ie using scrapy spider"""
     custom_settings = {
         'USER_AGENT': {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/'
-                       '537.36 (KHTML, like Gecko) Chrome/41.0.22'
-                       '28.0 Safari/537.36'},
+                    '537.36 (KHTML, like Gecko) Chrome/41.0.22'
+                    '28.0 Safari/537.36'},
         'LOG_LEVEL': "INFO",
     }
     name = 'daft'
 
     def parse(self, response):
-        """Extract the links to all ads"""
-
+        """Parses data from the ads and appends it to list ads"""
+        
+        # Extract the links to all ads on the current page
         links = response.css('a.PropertyInformationCommonStyles__addressCopy--'
                              'link::attr(href)').extract()
 
-        # Crawl into each of them and pass them the parse_ad function
+        # Start the webdriver
+        options = webdriver.ChromeOptions()
+        options.add_argument("headless")
+        desired_capabilities = options.to_capabilities()
+        driver = webdriver.Chrome(desired_capabilities=desired_capabilities)
+
+        # Accept cookies once (the main reason for using selenium)
+        driver.get('http:/www.daft.ie')
+        accept = driver.find_element_by_xpath(
+            '//*[@id = "js-cookie-modal-level-one"]/div/main/div/button[2]')
+        accept.click()
+
+        # Crawl into each of the ads and retrieve the data
         for link in links:
-            yield response.follow(url = link, callback = self.parse_ad)
+
+            # With selenium browse to url of ad          
+            driver.get('http:/www.daft.ie' + link)
+            
+            # Extract html text
+            html = driver.find_element_by_tag_name('html').get_attribute('innerHTML') 
+            
+            # Extract a javascript variable that contains all info on the page
+            ad_data = re.findall(r'(?<=trackingParam = ).*?(?=;)', html)[0]
+
+            # Write the data to textfile
+            with open('scrape.txt', 'a') as f:
+                f.write(ad_data + "\n")
+            self.log('Saved file %s' % 'scrape.txt')          
 
         # Go to the next page of ads
         for a in response.css('li.next_page > a::attr(href)'):
-            yield response.follow(a, callback = self.parse)
-
-    def parse_ad(self, response):
-        """Parses data from the ads and appends it to list ads"""
-        # Extracts a javascript variable that contains all info on the page
-        ad_data=response.css('script:contains("trackingParam")::text').get()
-        ad_data=re.findall(r'(?<=trackingParam = ).*?(?=;)', ad_data)[0]
-
-        #self.ads.append(eval(ad_data))
-
-        with open('scrape.txt', 'a') as f:
-             f.write(ad_data + "\n")
-        self.log('Saved file %s' % 'scrape.txt')
+            yield response.follow(a, callback = self.parse)   
+        
+        driver.quit()
 
 class Crawl_daft:
 
@@ -85,3 +102,4 @@ class Crawl_daft:
             ads.append(eval(i.replace("null", "np.nan")))
 
         self.data = pd.DataFrame(ads)
+

@@ -131,3 +131,98 @@ Rows in previous dataset: 19903
 Number of new rows: 157
 Rows in updated dataset: 20059
  
+Date of crawl: 2020-08-06
+Days since last crawl: 2020-08-02
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 20059
+Number of new rows: 162
+Rows in updated dataset: 20221
+ 
+Date of crawl: 2020-08-10
+Days since last crawl: 2020-08-06
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 20221
+Number of new rows: 157
+Rows in updated dataset: 20378
+ 
+Date of crawl: 2020-08-14
+Days since last crawl: 2020-08-10
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 20378
+Number of new rows: 286
+Rows in updated dataset: 20664
+ 
+Date of crawl: 2020-08-19
+Days since last crawl: 2020-08-14
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=4&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 20664
+Number of new rows: 108
+Rows in updated dataset: 20772
+ 
+Date of crawl: 2020-08-23
+Days since last crawl: 2020-08-19
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+ 
+Date of crawl: 2020-08-27
+Days since last crawl: 2020-08-19
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=7&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 20772
+Number of new rows: 389
+Rows in updated dataset: 21161
+ 
+Date of crawl: 2020-08-31
+Days since last crawl: 2020-08-27
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 21161
+Number of new rows: 90
+Rows in updated dataset: 21251
+ 
+Date of crawl: 2020-09-04
+Days since last crawl: 2020-08-31
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 21251
+Number of new rows: 247
+Rows in updated dataset: 21498
+ 
+Date of crawl: 2020-09-07
+Days since last crawl: 2020-09-04
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=2&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 21498
+Number of new rows: 74
+Rows in updated dataset: 21572
+ 
+Date of crawl: 2020-09-11
+Days since last crawl: 2020-09-07
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 21572
+Number of new rows: 301
+Rows in updated dataset: 21872
+ 
+Date of crawl: 2020-09-15
+Days since last crawl: 2020-09-11
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 21872
+Number of new rows: 139
+Rows in updated dataset: 22011
+ 
+Date of crawl: 2020-09-19
+Days since last crawl: 2020-09-15
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 22011
+Number of new rows: 236
+Rows in updated dataset: 22247
+ 
+Date of crawl: 2020-09-23
+Days since last crawl: 2020-09-19
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 22247
+Number of new rows: 239
+Rows in updated dataset: 22486
+ 
+Date of crawl: 2020-09-28
+Days since last crawl: 2020-09-23
+Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=4&s%5Badvanced%5D=1&searchSource=sale
+Rows in previous dataset: 22486
+Number of new rows: 165
+Rows in updated dataset: 22651
+ 

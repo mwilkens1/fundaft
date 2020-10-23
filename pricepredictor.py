@@ -5,6 +5,7 @@ import pandas as pd
 from add_data import Add_data
 from sklearn.externals import joblib
 import numpy as np
+from selenium import webdriver
 
 class PricePredictor():
     """
@@ -26,18 +27,23 @@ class PricePredictor():
         Output:
         soup = scraped html of the ad
         """
-        # This header is required for Daft.ie
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/'
-                   '537.36 (KHTML, like Gecko) Chrome/41.0.22'
-                   '28.0 Safari/537.36'}
+        #Use selenium to bypass cookiewall
+        options = webdriver.ChromeOptions()
+        options.add_argument("headless")
+        desired_capabilities = options.to_capabilities()
+        driver = webdriver.Chrome(desired_capabilities=desired_capabilities)
+        driver.set_page_load_timeout(3)
 
         # Get the page of the ad
         #r = requests.get(url, headers=headers, timeout=3)
         attempt = 1
         max_attempts = 5
         while attempt <= max_attempts:
-            try:
-                r = requests.get(url, headers=headers, timeout=3)
+            try:                
+                driver.get(url)
+                accept = driver.find_element_by_xpath(
+                    '//*[@id = "js-cookie-modal-level-one"]/div/main/div/button[2]')
+                accept.click()
                 break
             except:
                 print("Attempt {} failed".format(attempt))
@@ -47,13 +53,15 @@ class PricePredictor():
                 attempt += 1
 
         # Parse the content
-        self.soup = BeautifulSoup(r.text, 'lxml')
+        self.soup = BeautifulSoup(driver.page_source, 'lxml')
 
     def get_image(self):
         """Get the url of the image of the ad"""      
 
-        self.image_url = self.soup.find_all('img', 
-        style=lambda style: style and "max-height: 525px" in style)[0]['src']
+        #self.image_url = self.soup.find_all('img', 
+        #style=lambda style: style and "max-height: 525px" in style)[0]['src']
+        self.image_url = self.soup.find_all(
+            'img', class_='PropertyImage__mainImageLarge')[0]['src']
 
     def parse_data(self):
         """
