@@ -5,6 +5,7 @@ from return_figures import return_figures
 from pricepredictor import PricePredictor
 import requests
 
+
 app = Flask(__name__)
 
 # Instantiating the price predictor class. This loads the model

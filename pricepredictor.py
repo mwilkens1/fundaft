@@ -6,6 +6,7 @@ from add_data import Add_data
 from sklearn.externals import joblib
 import numpy as np
 from selenium import webdriver
+import os
 
 class PricePredictor():
     """
@@ -31,13 +32,14 @@ class PricePredictor():
         options = webdriver.ChromeOptions()
 
         #Only for heroku
-        GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
+        
         CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
+        chrome_bin = os.environ.get('GOOGLE_CHROME_BIN', 'chromedriver')
         options.add_argument('--disable-gpu')
         options.add_argument('--no-sandbox')
-        options.binary_location = GOOGLE_CHROME_PATH
+        options.binary_location = chrome_bin
 
-        options.add_argument("headless")
+        options.add_argument("--headless")
         #driver = webdriver.Chrome(chrome_options=options)
         driver = webdriver.Chrome(
             execution_path=CHROMEDRIVER_PATH, chrome_options=options)
