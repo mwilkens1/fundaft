@@ -40,9 +40,9 @@ class PricePredictor():
         options.binary_location = chrome_bin
 
         options.add_argument("--headless")
-        driver = webdriver.Chrome(chrome_options=options)
+        #driver = webdriver.Chrome(chrome_options=options)
         driver = webdriver.Chrome(
-            execution_path=CHROMEDRIVER_PATH, chrome_options=options)
+            executable_path=CHROMEDRIVER_PATH, chrome_options=options)
 
         driver.set_page_load_timeout(3)
 
