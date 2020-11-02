@@ -37,7 +37,7 @@ class PricePredictor():
         chrome_bin = os.environ.get('GOOGLE_CHROME_BIN', 'chromedriver')
         print(chrome_bin)
         options.add_argument('--disable-gpu')
-        #options.add_argument('--no-sandbox')
+        options.add_argument('--no-sandbox')
         options.binary_location = chrome_bin
 
         options.add_argument("--headless")
@@ -45,7 +45,7 @@ class PricePredictor():
         driver = webdriver.Chrome(
             executable_path=CHROMEDRIVER_PATH, chrome_options=options)
 
-        driver.set_page_load_timeout(3)
+        #driver.set_page_load_timeout(3)
 
 
         # Get the page of the ad
