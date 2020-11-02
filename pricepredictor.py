@@ -40,6 +40,7 @@ class PricePredictor():
         chrome_options.add_argument('--no-sandbox')
         chrome_options.binary_location = chrome_bin
         chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--enable-javascript")
         chrome_options.add_argument(
             '--user-agent="Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166"')
 
