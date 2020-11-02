@@ -29,24 +29,26 @@ class PricePredictor():
         soup = scraped html of the ad
         """
         #Use selenium to bypass cookiewall
-        options = webdriver.ChromeOptions()
+        chrome_options = webdriver.ChromeOptions()
 
         #Only for heroku
         
         CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
         chrome_bin = os.environ.get('GOOGLE_CHROME_BIN', 'chromedriver')
-        print(chrome_bin)
-        options.add_argument('--disable-gpu')
-        options.add_argument('--no-sandbox')
-        options.binary_location = chrome_bin
+        
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.binary_location = chrome_bin
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument(
+            '--user-agent="Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166"')
 
-        options.add_argument("--headless")
+        chrome_options.add_argument("--headless")
         #driver = webdriver.Chrome(chrome_options=options)
         driver = webdriver.Chrome(
-            executable_path=CHROMEDRIVER_PATH, chrome_options=options)
+            executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
 
-        #driver.set_page_load_timeout(3)
-
+        driver.set_page_load_timeout(3)
 
         # Get the page of the ad
         #r = requests.get(url, headers=headers, timeout=3)
