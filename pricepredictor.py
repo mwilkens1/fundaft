@@ -29,9 +29,18 @@ class PricePredictor():
         """
         #Use selenium to bypass cookiewall
         options = webdriver.ChromeOptions()
+
+        #Only for heroku
+        GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
+        CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
+        options.add_argument('--disable-gpu')
+        options.add_argument('--no-sandbox')
+        options.binary_location = GOOGLE_CHROME_PATH
+
         options.add_argument("headless")
-        desired_capabilities = options.to_capabilities()
-        driver = webdriver.Chrome(desired_capabilities=desired_capabilities)
+        #driver = webdriver.Chrome(chrome_options=options)
+        driver = webdriver.Chrome(
+            execution_path=CHROMEDRIVER_PATH, chrome_options=options)
         driver.set_page_load_timeout(3)
 
         # Get the page of the ad
