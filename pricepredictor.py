@@ -35,8 +35,9 @@ class PricePredictor():
         
         CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
         chrome_bin = os.environ.get('GOOGLE_CHROME_BIN', 'chromedriver')
+        print(chrome_bin)
         options.add_argument('--disable-gpu')
-        options.add_argument('--no-sandbox')
+        #options.add_argument('--no-sandbox')
         options.binary_location = chrome_bin
 
         options.add_argument("--headless")
