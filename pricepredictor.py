@@ -40,11 +40,11 @@ class PricePredictor():
         CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
         chrome_bin = os.environ.get('GOOGLE_CHROME_BIN', 'chromedriver')
         chrome_options.binary_location = chrome_bin
-        chrome_options.add_argument("--disable-dev-shm-usage")
+        #chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument(
             '--user-agent="Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166"')
         driver = webdriver.Chrome(
-            executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
+            executable_path=CHROMEDRIVER_PATH, options=chrome_options)
 
         driver.set_page_load_timeout(5)     
 
