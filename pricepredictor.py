@@ -42,8 +42,6 @@ class PricePredictor():
         GOOGLE_CHROME_BIN = os.environ.get('GOOGLE_CHROME_BIN')
         options.binary_location = GOOGLE_CHROME_BIN
         
-        #chrome_options.add_argument(
-        #    '--user-agent="Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166"')
         driver = webdriver.Chrome(
             executable_path=CHROMEDRIVER_PATH, options=options)
 
@@ -54,9 +52,14 @@ class PricePredictor():
         while attempt <= max_attempts:
 
             driver.get(url)
-            accept = driver.find_element_by_xpath(
-                '//*[@id = "js-cookie-modal-level-one"]/div/main/div/button[2]')
-            accept.click()  # accept cookies
+
+            #allowing all cookies. This popup does not appear if accepted before
+            try:
+                accept = driver.find_element_by_xpath(
+                    '//*[@id = "js-cookie-modal-level-one"]/div/main/div/button[2]')
+                accept.click()  # accept cookies
+            except:
+                pass
 
             # Parse the content
             self.soup = BeautifulSoup(driver.page_source, 'lxml')
