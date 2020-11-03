@@ -58,8 +58,7 @@ The webapp is available on [fundaft.herokuapps.com](http://fundaft.herokuapp.com
 ## Reflection<a name="reflection"></a>
 The webapp provides useful information for those looking to buy a house in Dublin. Not only does it give a general overview of the housing market, it also give an estimated value of a listed property. The accuracy of the prediciton is rather high, given that it not based on characterisics of the property that cannot easily be captured in data, such as the looks of a property. 
 
-Future development of the project could focus on:
-* Automatic updating of the database. Currently the data is scraped from Daft.ie on a weekly basis. This process could be automised on a daily basis for example. 
+Future development of the project could focus on: 
 * Rather than having a URL to an ad as an input for the prediction, a template could be created where users input characteristics of a property, such as its locations, number of bedrooms, etc. This would allow prospective sellers to use the app as well to get an idea on how much their asking price should be.
 * Natural Language Processing could be applied on the general description of the property to include non-standard information that is relevant for determining the value of the property. For example, the discription could mention the property was recently renovated. 
 * Image learning: each ad includes a series of photos of the property. A machine learning model could be developed that extracts features from these images to predict the price of the property. 
