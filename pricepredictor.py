@@ -6,6 +6,7 @@ from add_data import Add_data
 from sklearn.externals import joblib
 import numpy as np
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 import os
 
 class PricePredictor():
@@ -28,24 +29,23 @@ class PricePredictor():
         Output:
         soup = scraped html of the ad
         """
-        #Use selenium to bypass cookiewall
-        chrome_options = webdriver.ChromeOptions()
-        
-        
-        chrome_options.add_argument('--disable-gpu')
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument("--headless")
-        # driver = webdriver.Chrome(options=chrome_options)
 
+        #Use selenium to bypass cookiewall     
+        options = Options()
+        options.headless = True
+        
         #Only for heroku
-        CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
-        chrome_bin = os.environ.get('GOOGLE_CHROME_BIN', 'chromedriver')
-        chrome_options.binary_location = chrome_bin
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument(
-            '--user-agent="Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166"')
+        options.add_argument('--disable-gpu')
+        options.add_argument('--no-sandbox')
+        options.add_argument("--disable-dev-shm-usage")        
+        CHROMEDRIVER_PATH = os.environ.get('CHROMEDRIVER_PATH')
+        GOOGLE_CHROME_BIN = os.environ.get('GOOGLE_CHROME_BIN')
+        options.binary_location = GOOGLE_CHROME_BIN
+        
+        #chrome_options.add_argument(
+        #    '--user-agent="Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166"')
         driver = webdriver.Chrome(
-            executable_path=CHROMEDRIVER_PATH, options=chrome_options)
+            executable_path=CHROMEDRIVER_PATH, options=options)
 
         driver.set_page_load_timeout(5)     
 
