@@ -1,0 +1,5 @@
+.vscode
+__pycache__
+.gitattributes
+*.bat
+chromedriver.exe
