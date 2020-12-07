@@ -43,9 +43,10 @@ def get_ad_data(url):
 
     return data
 
+
 # The page should show the first listing in dublin city by default
 # scraping the page with the listings in Dublin.
-ad.get_soup("https://www.daft.ie/dublin-city/property-for-sale/")
+ad.get_soup("https://www.daft.ie/property-for-sale/dublin-city?sort=publishDateDesc")
 
 # Getting the url to the first listed ad
 initial_url = "https://www.daft.ie/" + ad.soup.find('li', {'class': 'SearchPage__Result-gg133s-2 itNYNv'}).find('a')['href']
