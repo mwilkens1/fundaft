@@ -34,8 +34,7 @@ class Daft_spider(scrapy.Spider):
 
         # Accept cookies once (the main reason for using selenium)
         driver.get('http:/www.daft.ie')
-        accept = driver.find_element_by_xpath(
-            '//*[@id = "js-cookie-modal-level-one"]/div/main/div/button[2]')
+        accept = driver.find_element_by_xpath( '//*[@id = "js-cookie-modal-level-one"]/div/main/div/button[2]')
         accept.click()
 
         # Crawl into each of the ads and retrieve the data
