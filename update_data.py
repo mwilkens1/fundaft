@@ -1,20 +1,15 @@
-from scrape_daft import Crawl_daft, Daft_spider
+from scrape_daft import Daft_spider
 from add_data import Add_data
 import pickle
 import pandas as pd
 from datetime import date
+import sys
 
 # Initiate crawler
-crawler = Crawl_daft()
+crawler = Daft_spider()
 
-# Count days since the last crawl and create the url
-crawler.create_url()
-
-print("Date of crawl: {}".format(date.today()))
-print("Days since last crawl: {}".format(crawler.date_last_crawl))
-print("Starting URL: {}".format(crawler.start_urls))
-
-assert crawler.days_since_last_crawl > 0, print("Error: last scrape was less than 1 day ago")
+if crawler.days_since_last_crawl < 1:
+    sys.exit("Error: last scrape was less than 1 day ago")
 
 # Crawl
 crawler.crawl()

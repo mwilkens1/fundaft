@@ -8,6 +8,7 @@ import numpy as np
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import os
+import json
 
 class PricePredictor():
     """
@@ -78,21 +79,70 @@ class PricePredictor():
 
         #self.image_url = self.soup.find_all('img', 
         #style=lambda style: style and "max-height: 525px" in style)[0]['src']
-        self.image_url = self.soup.find_all(
-            'img', class_='PropertyImage__mainImageLarge')[0]['src']
+        self.image_url = self.soup.find(
+            'img', attrs={'data-testid': True})['src']
 
     def parse_data(self):
         """
         Function to parse the data of a given Daft.ie URL
         """
 
-        # All the data we need is stored in one javascript variable
-        data = re.findall(r'(?<=trackingParam = ).*?(?=;)', str(self.soup))[0]
+        data = json.loads(self.soup.find(
+            'script', type='application/json').string)['props']['pageProps']['listing']
 
-        # The data is converted into a dictionary 
-        data_dict = eval(data.replace("null", "np.nan"))
-        # and to a dataframe
-        df = pd.DataFrame(data_dict, index=[0])
+        # Create dictionary of relevant variables
+        ad_data = {}
+
+        if 'neighbourhoodGuide' in data.keys():
+            ad_data['area'] = data['neighbourhoodGuide']['title'].replace(
+                ' Neighbourhood Guide', '')
+        if 'point' in data.keys():
+            ad_data['longitude'] = data['point']['coordinates'][0]
+            ad_data['latitude'] = data['point']['coordinates'][1]
+        if 'seller' in data.keys():
+            ad_data['seller_id'] = data['seller']['sellerId']
+            ad_data['seller_name'] = data['seller']['name']
+            ad_data['seller_type'] = data['seller']['sellerType']
+        if 'sellingType' in data.keys():
+            ad_data['selling_type'] = data['sellingType']
+
+        ad_data['ad_id'] = data['id']
+        ad_data['property_title'] = data['title']
+        ad_data['published_date'] = data['lastUpdateDate']
+
+        if 'From' in data['price']:
+            ad_data['price_type'] = 'from'
+        if 'Price on Application' in data['price']:
+            ad_data['price_type'] = 'on-application'
+
+        ad_data['price'] = int(re.findall(
+            '\d+', data['price'].replace(',', ''))[0])
+
+        if 'numBathrooms' in data.keys():
+            ad_data['bathrooms'] = int(
+                re.findall('\d+', data['numBathrooms'])[0])
+        if 'numBedrooms' in data.keys():
+            ad_data['beds'] = int(re.findall('\d+', data['numBedrooms'])[0])
+
+        if 'facilities' in data.keys():
+            facilities = ''
+            for i in data['facilities']:
+                facilities = facilities + i['name'] + ','
+            ad_data['facility'] = facilities[:-1]
+
+        if 'ber' in data.keys():
+            ad_data['ber_classification'] = data['ber']['rating']
+        if 'floorArea' in data.keys():
+            ad_data['surface'] = data['floorArea']['value']
+        if 'propertyType' in data.keys():
+            ad_data['property_type'] = data['propertyType']
+
+        if 'propertyOverview' in data.keys():
+            ad_data['no_of_units'] = int(re.findall(
+                '\d+', data['propertyOverview']['text'])[0])
+
+        df = pd.DataFrame(ad_data, index=[0])
+
         
         # Sometimes the add does not include all the variables that the model
         # requires to predict the price. 
