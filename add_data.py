@@ -176,7 +176,7 @@ class Add_data:
     def recode(self):
         """Some recoding"""
         self.df_ads_mapdata['published_date'] = pd.to_datetime(
-            self.df_ads_mapdata.published_date)
+            self.df_ads_mapdata.published_date, format='%d/%m/%Y')
         self.df_ads_mapdata['year'] = self.df_ads_mapdata['published_date'].dt.to_period(
             'Y').astype(str)
         self.df_ads_mapdata['month'] = self.df_ads_mapdata['published_date'].dt.to_period(

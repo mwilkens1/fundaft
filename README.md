@@ -1,5 +1,5 @@
 # Property valuation webapp Daft.ie
-Live version: [fundaft.herokuapps.com](http://fundaft.herokuapp.com/)
+Live version: [fundaft.herokuapp.com](http://fundaft.herokuapp.com/)
 
 ### Table of Contents
 
@@ -19,7 +19,7 @@ For most people, buying a house is something that you do only once or a few time
 
 This requires an expertise usually reserved for real estate experts: estimating a property's value. This project builds a Python Flask web app that will assist prospective property buyers by providing a property valuation for a given ad and general information about the Dublin housing market. 
 
-More specifically, the webapp can be accessed on [fundaft.herokuapps.com](http://fundaft.herokuapp.com/) and includes the following:
+More specifically, the webapp can be accessed on [fundaft.herokuapp.com](http://fundaft.herokuapp.com/) and includes the following:
 - a machine learning model that predicts the asking price of a property listed on Ireland's main property advertising website [Daft.ie](https://www.daft.ie/). It is trained on Daft.ie data as well as [openstreetmap](https://www.openstreetmap.org/) data. Users of the web app can enter a link to an ad and immediately get a valuation of the property.
 - Dashboard style information about the Dublin property market
 

@@ -33,12 +33,13 @@ class PricePredictor():
 
         #Use selenium to bypass cookiewall     
         options = Options()
-        options.headless = True
+        options.headless = True        
         
-        #Only for heroku
         options.add_argument('--disable-gpu')
         options.add_argument('--no-sandbox')
         options.add_argument("--disable-dev-shm-usage")        
+
+        #Only for heroku
         CHROMEDRIVER_PATH = os.environ.get('CHROMEDRIVER_PATH')
         GOOGLE_CHROME_BIN = os.environ.get('GOOGLE_CHROME_BIN')
         options.binary_location = GOOGLE_CHROME_BIN
@@ -131,11 +132,28 @@ class PricePredictor():
             ad_data['facility'] = facilities[:-1]
 
         if 'ber' in data.keys():
-            ad_data['ber_classification'] = data['ber']['rating']
+            if data['ber']['rating'] == 'SI_666' or data['ber']['rating'] =='Exempt':
+                ad_data['ber_classification'] = 'SINo666of2006exempt'
+            else:
+                ad_data['ber_classification'] = data['ber']['rating']     
+
         if 'floorArea' in data.keys():
             ad_data['surface'] = data['floorArea']['value']
         if 'propertyType' in data.keys():
-            ad_data['property_type'] = data['propertyType']
+            if data['propertyType'] == 'Terrace':
+                ad_data['property_type'] = 'terraced'
+            elif data['propertyType'] == 'End of Terrace':
+                ad_data['property_type'] = 'end-of-terrace'
+            elif data['propertyType'] == 'Bungalow':
+                ad_data['property_type'] = 'bungalow'
+            elif data['propertyType'] == 'Semi-D':
+                ad_data['property_type'] = 'semi-detached'
+            elif data['propertyType'] == 'House':
+                ad_data['property_type'] = 'house'
+            elif data['propertyType'] == 'Site':
+                ad_data['property_type'] = 'site'
+            else:
+                ad_data['property_type'] = data['propertyType']
 
         if 'propertyOverview' in data.keys():
             ad_data['no_of_units'] = int(re.findall(
@@ -143,17 +161,15 @@ class PricePredictor():
 
         df = pd.DataFrame(ad_data, index=[0])
 
-        
         # Sometimes the add does not include all the variables that the model
         # requires to predict the price. 
         # Check if any variables are missing and include them with np.nan
-        cols_needed = ['environment', 'platform', 'page_name', 'area', 'county',
-                       'longitude', 'latitude', 'seller_id', 'seller_name', 
-                       'seller_type','selling_type', 'property_category', 
-                       'ad_id','property_title','published_date','no_of_photos', 
-                       'advertising_type','currency','price_type', 'price',
-                       'bathrooms', 'beds', 'facility','open_viewing', 
-                       'ber_classification', 'surface','property_type','ad_ids',
+        cols_needed = ['area', 'longitude', 'latitude', 'seller_id', 'seller_name', 
+                       'seller_type','selling_type',
+                       'ad_id','property_title','published_date',
+                       'price_type', 'price',
+                       'bathrooms', 'beds', 'facility', 
+                       'ber_classification', 'surface','property_type',
                        'no_of_units']
 
         # If any of the required columns are missing
@@ -210,5 +226,6 @@ class PricePredictor():
             # Returns a predicted price
             self.predicted_price = np.exp(self.model.predict(self.data)[0])
             return(self.predicted_price)
-        except: # else returns nothing
-            return
+        except: # else returns 0
+            self.predicted_price = 0
+            return(self.predicted_price)

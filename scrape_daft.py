@@ -150,6 +150,7 @@ class Daft_spider():
 
         ad_data['ad_id'] = data['id']
         ad_data['property_title'] = data['title']
+
         ad_data['published_date'] = data['lastUpdateDate']
 
         if 'From' in data['price']:
