@@ -28,7 +28,7 @@ The data used for this project is data from Daft.ie for Dublin city and has been
 ## File Descriptions <a name="files"></a>
 
 ### Data collection
-* scrape_daft.py: script that includes classes for scraping daft.ie. It is a scrapy spider that goes scrapes each ad on each page of the properties listed for Dublin city for a given time interval.
+* scrape_daft.py: script that includes classes for scraping daft.ie. It is a  spider that goes scrapes each ad on each page of the properties listed for Dublin city for a given time interval.
 * openstreetmap_api.py: script that fetches the amenities (schools, pubs, etc) in Dublin from the openstreetmaps API. 
 * electoral_divisions.py: script for transforming a shapefile for Dublin. It selects only the relevant areas. This is used to create a map on the web app. Shapefile is from the [Central Statistics Office](https://www.cso.ie/en/census/census2011boundaryfiles/)
 * add_data.py: script for matching the scraped Daft.ie ads to the openstreetmap data. Amenities in a 0.5km radius are counted for a given property. Also, the electoral divisions are added to the data. 

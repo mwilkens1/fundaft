@@ -5,7 +5,6 @@ from return_figures import return_figures
 from pricepredictor import PricePredictor
 import requests
 
-
 app = Flask(__name__)
 
 # Instantiating the price predictor class. This loads the model
@@ -49,8 +48,7 @@ def get_ad_data(url):
 ad.get_soup("https://www.daft.ie/dublin-city/property-for-sale/")
 
 # Getting the url to the first listed ad
-initial_url = "https://www.daft.ie/" + ad.soup.findAll('a', {'class': 'PropertyInformationCommonStyles__propertyPrice--link'})[0]['href']
-
+initial_url = "https://www.daft.ie/" + ad.soup.find('li', {'class': 'SearchPage__Result-gg133s-2 itNYNv'}).find('a')['href']
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
