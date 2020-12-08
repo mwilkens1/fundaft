@@ -120,16 +120,18 @@ class PricePredictor():
             '\d+', data['price'].replace(',', ''))[0])
 
         if 'numBathrooms' in data.keys():
-            ad_data['bathrooms'] = int(
+            ad_data['bathrooms'] = float(
                 re.findall('\d+', data['numBathrooms'])[0])
         if 'numBedrooms' in data.keys():
-            ad_data['beds'] = int(re.findall('\d+', data['numBedrooms'])[0])
+            ad_data['beds'] = float(re.findall('\d+', data['numBedrooms'])[0])
 
         if 'facilities' in data.keys():
             facilities = ''
             for i in data['facilities']:
                 facilities = facilities + i['name'] + ','
             ad_data['facility'] = facilities[:-1]
+        else:
+            ad_data['facility'] = ''
 
         if 'ber' in data.keys():
             if data['ber']['rating'] == 'SI_666' or data['ber']['rating'] =='Exempt':
