@@ -281,6 +281,5 @@ Days since last crawl: 2020-11-22
 Starting URL: https://www.daft.ie/dublin-city/property-for-sale/?ad_type=sale&advanced=1&s%5Bdays_old%5D=3&s%5Badvanced%5D=1&searchSource=sale
 Rows in previous dataset: 24753
 Number of new rows: 145
-Rows in updated dataset: 24898
-
+Rows in updated dataset: 24898 
  

@@ -34,19 +34,18 @@ class PricePredictor():
         #Use selenium to bypass cookiewall     
         options = Options()
         options.headless = True        
-        
         options.add_argument('--disable-gpu')
         options.add_argument('--no-sandbox')
         options.add_argument("--disable-dev-shm-usage")        
 
         #Only for heroku
-        CHROMEDRIVER_PATH = os.environ.get('CHROMEDRIVER_PATH')
-        GOOGLE_CHROME_BIN = os.environ.get('GOOGLE_CHROME_BIN')
-        options.binary_location = GOOGLE_CHROME_BIN
+        #CHROMEDRIVER_PATH = os.environ.get('CHROMEDRIVER_PATH')
+        #GOOGLE_CHROME_BIN = os.environ.get('GOOGLE_CHROME_BIN')
+        #options.binary_location = GOOGLE_CHROME_BIN
         
-        driver = webdriver.Chrome(
-            executable_path=CHROMEDRIVER_PATH, options=options)
-        #driver = webdriver.Chrome(options=options)
+        #driver = webdriver.Chrome(
+        #    executable_path=CHROMEDRIVER_PATH, options=options)
+        driver = webdriver.Chrome(options=options)
         driver.set_page_load_timeout(5)     
 
         attempt = 1

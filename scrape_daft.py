@@ -16,7 +16,6 @@ class Daft_spider():
     """Crawler for Daft.ie using scrapy spider"""
 
     def __init__(self):
-        self.ads_scraped = 0
         self.date_last_crawl = time()
         self.data = pd.DataFrame()
         self.start_urls = 'https://www.daft.ie/property-for-sale/dublin-city?sort=publishDateDesc'
@@ -197,6 +196,3 @@ class Daft_spider():
         # Write the data to textfile
         with open('scrape.txt', 'a') as f:
             f.write(str(ad_data) + "\n")
-
-        self.ads_scraped += 1
-        print('\rAds scraped: {}'.format(self.ads_scraped), end='')

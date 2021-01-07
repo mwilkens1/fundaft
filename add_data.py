@@ -35,17 +35,23 @@ class Add_data:
         self.osm_data = pickle.load(open("data/osm_data.p", "rb"))
         # Ads crawled with scrape_daft.py
         # Removing any duplicates
-        self.df_ads = df_ads.drop_duplicates("ad_id", keep="last")
+        self.df_ads = df_ads.drop_duplicates("ad_id", keep="last").copy()
         self.df_ads_mapdata = pd.DataFrame()
 
         # Remove coordinates that are not in Dublin
-        self.df_ads = self.is_in_dublin(self.df_ads)
+        self.df_ads = self.is_in_dublin(self.df_ads).copy()
 
         # Try to find better coordinates on the basis of address
         self.geolocate_address()
 
         # If still no coordinates then remove from data
-        self.df_ads.dropna(subset=['longitude', 'latitude'], inplace=True)
+        temp = self.df_ads.dropna(
+            subset=['longitude', 'latitude'], inplace=True)
+
+        if temp is not None:
+            self.df_ads.dropna(
+                subset=['longitude', 'latitude'], inplace=True).copy()            
+
 
     def is_in_dublin(self, df):
         """    
