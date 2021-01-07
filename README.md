@@ -55,6 +55,12 @@ The data used for this project is data from Daft.ie for Dublin city and has been
 ## Results<a name="results"></a>
 The webapp is available on [fundaft.herokuapps.com](http://fundaft.herokuapp.com/). It can also be run locally after downloading the files. This also allows the updating of the data as well by running update_data.py. 
 
+Note: heroku app is not always loading reliably and may take a long time to load because I am using the free version of Heroku.
+
+![](static/img/price.jpg?raw=true)
+
+![](static/img/map.jpg?raw=true)
+
 ## Reflection<a name="reflection"></a>
 The webapp provides useful information for those looking to buy a house in Dublin. Not only does it give a general overview of the housing market, it also give an estimated value of a listed property. The accuracy of the prediciton is rather high, given that it not based on characterisics of the property that cannot easily be captured in data, such as the looks of a property. 
 
