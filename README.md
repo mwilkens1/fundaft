@@ -57,8 +57,8 @@ The webapp is available on [fundaft.herokuapps.com](http://fundaft.herokuapp.com
 
 Note: heroku app is not always loading reliably and may take a long time to load because I am using the free version of Heroku.
 
-<img src="static/img/price.jpg">
-<img src="static/img/map.jpg">
+<img src="price.jpg">
+<img src="map.jpg">
 
 ## Reflection<a name="reflection"></a>
 The webapp provides useful information for those looking to buy a house in Dublin. Not only does it give a general overview of the housing market, it also give an estimated value of a listed property. The accuracy of the prediciton is rather high, given that it not based on characterisics of the property that cannot easily be captured in data, such as the looks of a property. 
