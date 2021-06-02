@@ -28,7 +28,7 @@ scipy==1.4.1
 selenium==3.141.0
 six==1.14.0
 soupsieve==2.0
-urllib3==1.25.8
+urllib3==1.26.5
 Werkzeug==1.0.1
 win-inet-pton==1.1.0
 wincertstore==0.2
